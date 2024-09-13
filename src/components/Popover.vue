@@ -4,7 +4,7 @@ import { PopoverArrow, PopoverClose, PopoverContent, PopoverPortal, PopoverRoot,
 
 <template>
     <PopoverRoot>
-        <PopoverTrigger class="bg-blue-500 rounded-sm py-1 px-2 hover:bg-blue-900">More info</PopoverTrigger>
+        <PopoverTrigger class="inline-flex items-center justify-center rounded px-4 text-base leading-none font-medium h-9 bg-white text-violet-500">More info</PopoverTrigger>
         <PopoverPortal >
             <PopoverContent>
                 Some more info ...
@@ -14,3 +14,5 @@ import { PopoverArrow, PopoverClose, PopoverContent, PopoverPortal, PopoverRoot,
     </PopoverRoot>
 </template>
 
+
+<!-- inline-flex items-center justify-center rounded px-4 text-base leading-none font-medium h-9 bg-white text-violet-11 shadow-[0_2px_10px_var(--black-a7)] -->
