@@ -35,6 +35,7 @@ import Form from './Form.vue';
         <!-- Botão para fechar o Dialog -->
         <DialogClose as="button" class="absolute top-2 right-2">X</DialogClose>
         <!-- Formulario de Cadastro -->
+         <hr>
         <Form />
     </DialogContent>
 </DialogPortal>
