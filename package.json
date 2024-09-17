@@ -9,6 +9,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@iconify/vue": "^4.1.2",
+    "@internationalized/date": "^3.5.5",
     "radix-vue": "^1.9.5",
     "vue": "^3.4.37"
   },
