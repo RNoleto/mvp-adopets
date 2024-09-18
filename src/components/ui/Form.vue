@@ -10,6 +10,7 @@ import RadioGroup from './RadioGroup.vue';
 
 const petName = ref('')
 const birthDate = ref('')
+const breedPet = ref('')
 </script>
 
 <template>
@@ -17,6 +18,17 @@ const birthDate = ref('')
     <div class="flex flex-col gap-4">
       <!-- Campo de Nome do Pet -->
       <TextInput label="Nome do Pet" id="petName" v-model="petName"/>
+      <!-- Especie do Pet -->
+       <RadioGroup 
+        groupLabel="Especie do Pet",
+        :options="[
+          { label: 'Cachorro', value:'dog' },
+          { label:'Gato', value:'cat'}
+        ]"
+        defaultValue="dog"
+       />
+      <!-- Campo de Raça do Pet -->
+      <TextInput label="Raça do Pet" id="breedPet" v-model="breedPet"/>
       <!-- Campo de Data de Nascimento do Pet -->
       <DatePickerInput label="Data de Nascimento" id="birthDate" v-model="birthDate" />
       <!-- Campo para Sexo do Pet -->
@@ -36,7 +48,7 @@ const birthDate = ref('')
           { label: 'Médio', value: 'medium' },
           { label: 'Grande', value: 'large' }
         ]"
-        defaultValue="medium"
+        defaultValue="small"
       />
     </div>
     <!-- Campo de Botões -->
