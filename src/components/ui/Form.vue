@@ -40,6 +40,15 @@ const breedPet = ref('')
           ]" 
           defaultValue="male" 
       />
+      <!-- Castrado? -->
+       <RadioGroup
+          groupLabel="Castrado"
+          :options="[
+            { label: 'Sim', value: 'S'},
+            { label: 'Não', value: 'N'}
+          ]"
+          defaultValue="N"
+       />
       <!-- Campo para Porte do Pet -->
       <RadioGroup
         groupLabel="Tamanho do Pet",  

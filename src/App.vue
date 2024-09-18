@@ -4,5 +4,6 @@ import Summary from './components/Summary.vue';
 </script>
 
 <template>
+        <!-- <EmpyPets /> -->
         <Summary/>
 </template>
