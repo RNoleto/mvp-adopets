@@ -1,18 +1,17 @@
 <script setup>
-import {
-  DialogRoot,
-  DialogTrigger,
-  DialogPortal,
-  DialogOverlay,
-  DialogContent,
-  DialogTitle,
-  DialogDescription,
-  DialogClose
-} from 'radix-vue'
+import { 
+  DialogRoot, 
+  DialogTrigger, 
+  DialogPortal, 
+  DialogOverlay, 
+  DialogContent, 
+  DialogTitle, 
+  DialogDescription, 
+  DialogClose 
+} from 'radix-vue';
 
 import Form from './Form.vue';
 import Button from './Button.vue';
-
 </script>
 
 <template>
@@ -33,12 +32,14 @@ import Button from './Button.vue';
         <DialogDescription class="text-zinc-400 text-sm leading-relaxed">
           Detalhes do meu pet
         </DialogDescription>
+        
         <!-- Botão para fechar o Dialog -->
         <DialogClose as="button" class="absolute top-2 right-2">X</DialogClose>
-        <!-- Formulario de Cadastro -->
-         <hr>
+        
+        <!-- Formulário de Cadastro -->
+        <hr />
         <Form />
-    </DialogContent>
-</DialogPortal>
-</DialogRoot>
+      </DialogContent>
+    </DialogPortal>
+  </DialogRoot>
 </template>
