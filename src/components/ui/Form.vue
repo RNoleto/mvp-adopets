@@ -1,10 +1,12 @@
 <script setup>
 import { ref } from 'vue';
+import { DialogClose } from 'radix-vue';
 
 import TextInput from './TextInput.vue';
 import DatePickerInput from './DatePickerInput.vue';
 import Button from './Button.vue';
-import { DialogClose } from 'radix-vue';
+
+import RadioGroup from './RadioGroup.vue';
 
 const petName = ref('')
 const birthDate = ref('')
@@ -17,6 +19,7 @@ const birthDate = ref('')
       <TextInput label="Nome do Pet" id="petName" v-model="petName"/>
       <!-- Campo de Data de Nascimento do Pet -->
       <DatePickerInput label="Data de Nascimento" id="birthDate" v-model="birthDate" />
+      <RadioGroup />
     </div>
     <!-- Campo de Botões -->
     <div class="flex justify-between gap-4">
