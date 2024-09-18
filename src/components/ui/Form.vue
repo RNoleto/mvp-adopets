@@ -19,7 +19,25 @@ const birthDate = ref('')
       <TextInput label="Nome do Pet" id="petName" v-model="petName"/>
       <!-- Campo de Data de Nascimento do Pet -->
       <DatePickerInput label="Data de Nascimento" id="birthDate" v-model="birthDate" />
-      <RadioGroup />
+      <!-- Campo para Sexo do Pet -->
+      <RadioGroup
+        groupLabel="Sexo do Pet", 
+        :options="[
+          { label: 'Macho', value: 'male'}, 
+          {label: 'Fêmea', value: 'female'}
+          ]" 
+          defaultValue="male" 
+      />
+      <!-- Campo para Porte do Pet -->
+      <RadioGroup
+        groupLabel="Tamanho do Pet",  
+        :options="[
+          { label: 'Pequeno', value: 'small'},
+          { label: 'Médio', value: 'medium' },
+          { label: 'Grande', value: 'large' }
+        ]"
+        defaultValue="medium"
+      />
     </div>
     <!-- Campo de Botões -->
     <div class="flex justify-between gap-4">
