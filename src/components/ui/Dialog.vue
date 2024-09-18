@@ -11,6 +11,7 @@ import {
 } from 'radix-vue'
 
 import Form from './Form.vue';
+import Button from './Button.vue';
 
 </script>
 
@@ -18,7 +19,7 @@ import Form from './Form.vue';
   <DialogRoot>
     <!-- Trigger do Dialog -->
     <DialogTrigger>
-      <button class="bg-zinc-500 rounded py-1 px-2 hover:bg-zinc-700">Cadastrar Pet</button>
+      <Button variant="primary" size="default" class="w-full">Cadastrar Pet</Button>
     </DialogTrigger>
 
     <!-- Portal e Overlay -->

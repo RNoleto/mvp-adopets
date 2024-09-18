@@ -10,7 +10,8 @@ import letsStart from '../assets/lets-start-illustration.svg'
         <img :src="letsStart" class="" alt="adopets">
         <p class="text-zinc-300 leading-relaxed max-w-80 text-center">Você ainda não cadastrou nenhum Pet</p>
         <Dialog>
-            <DialogTrigger>Cadastrar Pet</DialogTrigger>
+            <DialogTrigger>
+            </DialogTrigger>
         </Dialog>
     </div>
 </template>

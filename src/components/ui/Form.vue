@@ -4,6 +4,7 @@ import { ref } from 'vue';
 import TextInput from './TextInput.vue';
 import DatePickerInput from './DatePickerInput.vue';
 import Button from './Button.vue';
+import { DialogClose } from 'radix-vue';
 
 const petName = ref('')
 const birthDate = ref('')
@@ -20,7 +21,9 @@ const birthDate = ref('')
     <!-- Campo de Botões -->
     <div class="flex justify-between gap-4">
       <Button variant="primary" size="default" class="w-full">Cadastrar Pet</Button>
-      <Button variant="secondary" size="sm" class="w-36">Cancelar</Button>
+      <DialogClose>
+        <Button variant="secondary" class="w-36">Cancelar</Button>
+      </DialogClose>
     </div>
   </div>
   
