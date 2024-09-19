@@ -21,14 +21,20 @@ import {
   DatePickerTrigger,
   Label,
 } from 'radix-vue'
+
+const props = defineProps({
+  label: String,
+  id: String,
+  modelValue: String,
+})
 </script>
 
 <template>
-  <div class="flex flex-col gap-2">
+  <div class="flex flex-col">
     <Label
       class="text-sm font-semibold text-white"
       for="date-field"
-    >Data de Nascimento</Label>
+    >{{ label }}</Label>
     <DatePickerRoot
       id="date-field"
     >

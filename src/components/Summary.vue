@@ -1,9 +1,12 @@
 <script setup>
 import logoAdopets from '../assets/Adopets.svg'
 import Dialog from './ui/Dialog.vue';
-import Button from './ui/Button.vue';
 import Form from './ui/Form.vue';
+import TextInput from './ui/TextInput.vue';
+import DatePickerInput from './ui/DatePickerInput.vue';
+import Button from './ui/Button.vue';
 import { DialogClose, DialogContent, DialogDescription, DialogOverlay, DialogPortal, DialogRoot, DialogTitle, DialogTrigger } from 'radix-vue';
+
 </script>
 
 <template>
@@ -32,18 +35,37 @@ import { DialogClose, DialogContent, DialogDescription, DialogOverlay, DialogPor
 
                         <!-- Conteúdo do Dialog com detalhes do pet -->
                         <DialogContent class="fixed z-60 right-0 top-0 bottom-0 w-[400px] h-screen border-l border-zinc-900 bg-zinc-950 p-8">
-                            <DialogTitle class="text-lg font-semibold">Detalhes do Pet</DialogTitle>
-                            <DialogDescription class=" text-zinc-400 text-sm leading-relaxed">
-                                Informações sobre o pet:
-                                <hr class="mt-2 mb-2">
-                                <div>
-                                    <ul class="flex flex-col gap-1">
-                                        <li><span class="text-base text-white font-semibold">Nome:</span> Snow</li>
-                                        <li><span class="text-base text-white font-semibold">Idade:</span> 7 Anos</li>
-                                        <li><span class="text-base text-white font-semibold">Sexo:</span> Macho</li>
-                                        <li><span class="text-base text-white font-semibold">Espécie:</span> Cachorro</li>
-                                        <li><span class="text-base text-white font-semibold">ID:</span> 21131321331</li>
-                                    </ul>
+                            <DialogTitle class="text-xl font-semibold">Snow</DialogTitle>
+                            <DialogDescription class=" text-zinc-400 text-sm leading-relaxed flex flex-col h-full">
+                                <p>Detalhes sobre Snow</p>
+                                <hr>
+                                <div class="py-2">
+                                    <p><span class="mr-2 text-base text-white font-semibold">Idade:</span>7 Anos</p>
+                                    <p><span class="mr-2 text-base text-white font-semibold">Sexo:</span> Macho</p>
+                                    <p><span class="mr-2 text-base text-white font-semibold">Espécie:</span> Cachorro</p>
+                                    <p><span class="mr-2 text-base text-white font-semibold">ID:</span> 21131321331</p>
+                                </div>
+                                <hr>
+                                <!-- Criar UI ou não? -->
+                                <div class="mt-2 flex flex-col gap-2">
+                                    <div>
+                                        <TextInput label="Vacina" />
+                                        <DatePickerInput label="Data de Aplicação"/>
+                                    </div>
+                                    <div>
+                                        <TextInput label="Medicamento" />
+                                        <DatePickerInput label="Data de Aplicação"/>
+                                    </div>
+                                    <!-- Novos campos para o Pet -->
+                                    <!-- Vacinas -->
+                                    <!-- Medicamentos -->
+                                    <!-- Outros  -->
+                                </div>
+                                <div class="mt-4 flex gap-2 py-2">
+                                    <Button variant="primary" size="default" class="w-full">Salvar</Button>
+                                    <DialogClose class="w-full">
+                                        <Button variant="secondary" size="default" class="w-full">Cancelar</Button>
+                                    </DialogClose>
                                 </div>
                             </DialogDescription>
                             <DialogClose as="button" class="absolute top-2 right-2">X</DialogClose>
@@ -53,6 +75,7 @@ import { DialogClose, DialogContent, DialogDescription, DialogOverlay, DialogPor
                 <hr>            
             </div>
         </div>
+        <!-- Formulario para cadastar novo pet -->
         <div class="w-[360px]">
             <Dialog
                 title="Cadastrar meu Pet"
