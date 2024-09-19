@@ -9,16 +9,29 @@ import {
   DialogDescription, 
   DialogClose 
 } from 'radix-vue';
-
-import Form from './Form.vue';
 import Button from './Button.vue';
+
+defineProps({
+  title: {
+    type: String,
+    required: true,
+  },
+  description: {
+    type: String,
+    required: true,
+  },
+  buttonText:{
+    type: String,
+    default: 'Abrir Diálogo',
+  }
+});
 </script>
 
 <template>
   <DialogRoot>
     <!-- Trigger do Dialog -->
     <DialogTrigger>
-      <Button variant="primary" size="default" class="w-full">Cadastrar Pet</Button>
+      <Button variant="primary" size="default" class="w-full">{{ buttonText }}</Button>
     </DialogTrigger>
 
     <!-- Portal e Overlay -->
@@ -28,17 +41,16 @@ import Button from './Button.vue';
       <!-- Conteúdo do Dialog -->
       <DialogContent class="fixed z-60 right-0 top-0 bottom-0 w-[400px] h-screen border-l border-zinc-900 bg-zinc-950 p-8">
         <!-- Título e Descrição -->
-        <DialogTitle class="text-lg font-semibold">Cadastro do meu Pet</DialogTitle>
+        <DialogTitle class="text-lg font-semibold">{{ title }}</DialogTitle>
         <DialogDescription class="text-zinc-400 text-sm leading-relaxed">
-          Detalhes do meu pet
+          {{ description }}
         </DialogDescription>
         
         <!-- Botão para fechar o Dialog -->
         <DialogClose as="button" class="absolute top-2 right-2">X</DialogClose>
-        
-        <!-- Formulário de Cadastro -->
-        <hr />
-        <Form />
+        <!-- Slot para conteúdo personalizado -->
+        <hr>
+        <slot />
       </DialogContent>
     </DialogPortal>
   </DialogRoot>

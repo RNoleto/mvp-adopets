@@ -5,5 +5,5 @@ import Summary from './components/Summary.vue';
 
 <template>
         <!-- <EmpyPets /> -->
-        <Summary/>
+        <Summary />
 </template>
