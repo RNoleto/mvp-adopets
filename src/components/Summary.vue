@@ -1,11 +1,19 @@
 <script setup>
+// Imagens
 import logoAdopets from '../assets/Adopets.svg'
+// Components UI
 import Dialog from './ui/Dialog.vue';
 import Form from './ui/Form.vue';
 import TextInput from './ui/TextInput.vue';
 import DatePickerInput from './ui/DatePickerInput.vue';
 import Button from './ui/Button.vue';
+import Combobox from './ui/Combobox.vue';
+import { Icon } from '@iconify/vue/dist/iconify.js';
+// Componentes
 import { DialogClose, DialogContent, DialogDescription, DialogOverlay, DialogPortal, DialogRoot, DialogTitle, DialogTrigger } from 'radix-vue';
+
+const vacines = ['Raiva', 'Giardia']
+const medicines = ['Antipulgas', 'Vermifugo']
 
 </script>
 
@@ -47,16 +55,17 @@ import { DialogClose, DialogContent, DialogDescription, DialogOverlay, DialogPor
                                 </div>
                                 <hr>
                                 <!-- Criar UI ou não? -->
-                                <div class="mt-2 flex flex-col gap-2">
-                                    <div>
-                                        <TextInput label="Vacina" />
-                                        <DatePickerInput label="Data de Aplicação"/>
-                                    </div>
-                                    <div>
-                                        <TextInput label="Medicamento" />
-                                        <DatePickerInput label="Data de Aplicação"/>
-                                    </div>
-                                    <!-- Novos campos para o Pet -->
+                                <div class="mt-2 flex gap-2">
+                                    <Combobox 
+                                        :options="vacines"
+                                        :medicamentos="medicines"
+                                        placeholder="Selecione a opção"
+                                        label1="Vacinas"
+                                        label2="Medicamentos"
+                                    />
+                                    <Button >
+                                        <Icon icon="radix-icons:plus-circled" />
+                                    </Button>
                                     <!-- Vacinas -->
                                     <!-- Medicamentos -->
                                     <!-- Outros  -->
