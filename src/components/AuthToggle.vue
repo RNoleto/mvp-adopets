@@ -1,6 +1,7 @@
 <script setup>
 import { ref } from 'vue';
 import { useRouter } from 'vue-router'; // Importa useRouter
+import axios from 'axios'; // Importa axios para fazer as chamadas à API
 import logo from '../assets/Adopets.svg'; // Importa a logo
 
 // Componente UI
@@ -33,23 +34,43 @@ const showLoginForm = () => {
 // Função para manipular a submissão do formulário
 const handleSubmit = async () => {
     if (isAuthForm.value) {
-        // Aqui você pode fazer a chamada à API para registrar o usuário
-        console.log('Cadastrando usuário:', { userName: userName.value, userEmail: userEmail.value, userPassword: userPassword.value });
-        // Redireciona para a página de login após cadastro (opcional)
-        router.push('/'); // Se você quiser redirecionar para a página de login após o cadastro
-    } else {
-        // Aqui você pode fazer a chamada à API para fazer login
-        console.log('Fazendo login:', { loginEmail: loginEmail.value, loginPassword: loginPassword.value });
-        
-        // Simulação de sucesso de login (substitua pela sua lógica de autenticação)
-        const loginSuccess = true; // Você deve verificar a resposta da sua API
+        // Chamada à API para registrar o usuário
+        try {
+            const response = await axios.post('/register', {
+                name: userName.value,
+                email: userEmail.value,
+                password: userPassword.value
+            });
 
-        if (loginSuccess) {
-            // Redireciona para a página EmpyPets após login bem-sucedido
-            router.push('/empy-pets');
-        } else {
-            // Trate o erro de login (por exemplo, exibir uma mensagem de erro)
-            console.error('Falha no login');
+            console.log('Usuário registrado:', response.data);
+
+            // Redireciona para a página de login após cadastro (opcional)
+            router.push('/');
+        } catch (error) {
+            console.error('Erro ao registrar:', error.response?.data || error.message);
+        }
+    } else {
+        // Chamada à API para fazer login
+        try {
+            const response = await axios.post('/login', {
+                email: loginEmail.value,
+                password: loginPassword.value
+            });
+
+            console.log('Login realizado:', response.data);
+
+            // Simulação de sucesso de login (você deve verificar a resposta da sua API)
+            const loginSuccess = response.status === 200;
+
+            if (loginSuccess) {
+                // Armazena o token ou os dados do usuário, se necessário
+                localStorage.setItem('token', response.data.token);
+
+                // Redireciona para a página EmpyPets após login bem-sucedido
+                router.push('/empy-pets');
+            }
+        } catch (error) {
+            console.error('Erro no login:', error.response?.data || error.message);
         }
     }
 

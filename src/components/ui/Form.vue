@@ -33,6 +33,7 @@ const savePet = async () => {
     console.log('Pet cadastrado com sucesso:', response.data);
   } catch (error) {
     console.error('Erro ao cadastrar o Pet:', error.response.data);
+    console.log("Dados do Pet cadastrado: ", petData.value);
   }
 };
 </script>
@@ -50,9 +51,9 @@ const savePet = async () => {
       <RadioGroup 
         groupLabel="Espécie do Pet"
         v-model="petData.specie"
-        :options="[
-          { label: 'Canina', value: 'Canina' },
-          { label:'Felina', value: 'Felina' }
+        :options="[ 
+          { label: 'Canina', value: 'Canina' }, 
+          { label: 'Felina', value: 'Felina' } 
         ]"
         defaultValue="Canina"
       />
@@ -67,21 +68,20 @@ const savePet = async () => {
       <RadioGroup
         groupLabel="Sexo do Pet"
         v-model="petData.gender"
-        :options="[
+        :options="[ 
           { label: 'Macho', value: 'M' }, 
-          { label: 'Fêmea', value: 'F' }
+          { label: 'Fêmea', value: 'F' } 
         ]"
         defaultValue="F"
-        required
       />
       
       <!-- Campo para Castrado -->
       <RadioGroup
         groupLabel="Castrado"
         v-model="petData.is_castrated"
-        :options="[
-          { label: 'Sim', value: 'S' },
-          { label: 'Não', value: 'N' }
+        :options="[ 
+          { label: 'Sim', value: 'S' }, 
+          { label: 'Não', value: 'N' } 
         ]"
         defaultValue="N"
       />
@@ -90,10 +90,10 @@ const savePet = async () => {
       <RadioGroup
         groupLabel="Tamanho do Pet"
         v-model="petData.pet_size"
-        :options="[
-          { label: 'Pequeno', value: 'small' },
-          { label: 'Médio', value: 'medium' },
-          { label: 'Grande', value: 'large' }
+        :options="[ 
+          { label: 'Pequeno', value: 'small' }, 
+          { label: 'Médio', value: 'medium' }, 
+          { label: 'Grande', value: 'large' } 
         ]"
         defaultValue="small"
       />

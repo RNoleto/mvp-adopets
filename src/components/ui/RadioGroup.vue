@@ -1,8 +1,8 @@
 <script setup>
 import { RadioGroupRoot, RadioGroupItem, RadioGroupIndicator } from 'radix-vue'
-import { defineProps } from 'vue'
+import { defineProps, defineEmits } from 'vue'
 
-// Definindo props para receber valores dinâmicos
+// Definindo props e emitindo eventos para v-model
 const props = defineProps({
   options: {
     type: Array,
@@ -23,13 +23,19 @@ const props = defineProps({
     default: 'grupo'
   }
 })
+
+const emit = defineEmits(['update:modelValue'])
+
+const updateValue = (value) => {
+  emit('update:modelValue', value)
+}
 </script>
 
 <template>
-    <div>
-        <label v-if="groupLabel" class="text-sm font-semibold text-white">{{ groupLabel }}</label>
-    </div>
-  <RadioGroupRoot class="flex flex-wrap w-full gap-5" :default-value="defaultValue" aria-label="View density" >
+  <div>
+    <label v-if="groupLabel" class="text-sm font-semibold text-white">{{ groupLabel }}</label>
+  </div>
+  <RadioGroupRoot class="flex flex-wrap w-full gap-5" :default-value="defaultValue" :value="modelValue" @value-change="updateValue">
     <!-- Usando v-for para iterar sobre as opções -->
     <div v-for="option in options" :key="option.value" class="flex items-center">
       <RadioGroupItem 
