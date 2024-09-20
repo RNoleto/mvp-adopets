@@ -1,6 +1,6 @@
 <script setup>
 import { RadioGroupRoot, RadioGroupItem, RadioGroupIndicator } from 'radix-vue'
-import { ref, defineProps } from 'vue'
+import { defineProps } from 'vue'
 
 // Definindo props para receber valores dinâmicos
 const props = defineProps({
@@ -8,6 +8,10 @@ const props = defineProps({
     type: Array,
     required: true,
     default: () => []
+  },
+  modelValue: {
+    type: String,
+    default: ''
   },
   defaultValue: {
     type: String,
