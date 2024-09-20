@@ -4,7 +4,6 @@ import axios from 'axios';
 import TextInput from './ui/TextInput.vue';
 import Button from './ui/Button.vue';
 
-const userName = ref('');
 const userEmail = ref('');
 const userPassword = ref('');
 const loading = ref(false);
@@ -15,25 +14,25 @@ const handleSubmit = async () => {
   errorMessage.value = null;
 
   const formData = {
-    name: userName.value,
     email: userEmail.value,
     password: userPassword.value,
   };
 
   try {
     // Enviando dados do formulário para a API
-    const response = await axios.post('/register', formData);
+    const response = await axios.post('/login', formData);
     
-    // Exibir sucesso ou realizar alguma ação após o cadastro
-    console.log('Usuário cadastrado:', response.data);
+    // Exibir sucesso ou realizar alguma ação após o login
+    console.log('Usuário logado:', response.data);
     
-    // Resetar os campos após o cadastro bem-sucedido
-    userName.value = '';
+    // Resetar os campos após o login bem-sucedido
     userEmail.value = '';
     userPassword.value = '';
+    
+    // Redirecionar ou fazer outra ação, como armazenar o token
   } catch (error) {
-    // Exibir uma mensagem de erro caso o cadastro falhe
-    errorMessage.value = 'Ocorreu um erro ao cadastrar o usuário. Tente novamente.';
+    // Exibir uma mensagem de erro caso o login falhe
+    errorMessage.value = 'Ocorreu um erro ao fazer login. Tente novamente.';
     console.error(error);
   } finally {
     loading.value = false;
@@ -42,16 +41,8 @@ const handleSubmit = async () => {
 </script>
 
 <template>
-  <div class="h-screen flex flex-col items-center justify-center">
+  <div class="h-screen flex flex-col items-center justify-center gap-8">
     <form @submit.prevent="handleSubmit" class="space-y-4 max-w-[400px]">
-      <!-- Campo de Nome -->
-      <TextInput
-        id="name"
-        v-model="userName"
-        label="Nome"
-        placeholder="Seu nome"
-      />
-  
       <!-- Campo de Email -->
       <TextInput
         id="email"
@@ -78,7 +69,7 @@ const handleSubmit = async () => {
         type="submit"
         :disabled="loading"
       >
-        {{ loading ? 'Cadastrando...' : 'Registrar' }}
+        {{ loading ? 'Entrando...' : 'Login' }}
       </Button>
 
       <!-- Exibindo Mensagem de Erro -->
