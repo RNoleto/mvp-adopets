@@ -9,6 +9,7 @@ import Button from './Button.vue';
 import RadioGroup from './RadioGroup.vue';
 
 const petName = ref('')
+const petChip = ref('')
 const birthDate = ref('')
 const breedPet = ref('')
 </script>
@@ -18,12 +19,14 @@ const breedPet = ref('')
     <div class="flex flex-col gap-4">
       <!-- Campo de Nome do Pet -->
       <TextInput label="Nome do Pet" id="petName" v-model="petName"/>
+      <!-- Numero do Chip -->
+      <TextInput type="number" label="Nº do Chip" id="petChip" v-model="petChip"/>
       <!-- Especie do Pet -->
        <RadioGroup 
-        groupLabel="Especie do Pet",
+        groupLabel="Especie do Pet"
         :options="[
-          { label: 'Cachorro', value:'dog' },
-          { label:'Gato', value:'cat'}
+          { label: 'Cachorro', value: 'dog' },
+          { label:'Gato', value: 'cat'}
         ]"
         defaultValue="dog"
        />
@@ -33,7 +36,7 @@ const breedPet = ref('')
       <DatePickerInput label="Data de Nascimento" id="birthDate" v-model="birthDate" />
       <!-- Campo para Sexo do Pet -->
       <RadioGroup
-        groupLabel="Sexo do Pet", 
+        groupLabel="Sexo do Pet" 
         :options="[
           { label: 'Macho', value: 'male'}, 
           {label: 'Fêmea', value: 'female'}
@@ -51,7 +54,7 @@ const breedPet = ref('')
        />
       <!-- Campo para Porte do Pet -->
       <RadioGroup
-        groupLabel="Tamanho do Pet",  
+        groupLabel="Tamanho do Pet"  
         :options="[
           { label: 'Pequeno', value: 'small'},
           { label: 'Médio', value: 'medium' },

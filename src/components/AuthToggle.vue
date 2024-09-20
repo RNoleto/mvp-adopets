@@ -1,10 +1,13 @@
 <script setup>
 import { ref } from 'vue';
+import { useRouter } from 'vue-router'; // Importa useRouter
 import logo from '../assets/Adopets.svg'; // Importa a logo
 
 // Componente UI
 import Button from './ui/Button.vue';
 import TextInput from './ui/TextInput.vue';
+
+const router = useRouter(); // Cria uma instância do router
 
 const isFormVisible = ref(false); // Controla a exibição dos formulários
 const isAuthForm = ref(true); // Controla qual formulário exibir
@@ -28,13 +31,26 @@ const showLoginForm = () => {
 };
 
 // Função para manipular a submissão do formulário
-const handleSubmit = () => {
+const handleSubmit = async () => {
     if (isAuthForm.value) {
         // Aqui você pode fazer a chamada à API para registrar o usuário
         console.log('Cadastrando usuário:', { userName: userName.value, userEmail: userEmail.value, userPassword: userPassword.value });
+        // Redireciona para a página de login após cadastro (opcional)
+        router.push('/'); // Se você quiser redirecionar para a página de login após o cadastro
     } else {
         // Aqui você pode fazer a chamada à API para fazer login
         console.log('Fazendo login:', { loginEmail: loginEmail.value, loginPassword: loginPassword.value });
+        
+        // Simulação de sucesso de login (substitua pela sua lógica de autenticação)
+        const loginSuccess = true; // Você deve verificar a resposta da sua API
+
+        if (loginSuccess) {
+            // Redireciona para a página EmpyPets após login bem-sucedido
+            router.push('/empy-pets');
+        } else {
+            // Trate o erro de login (por exemplo, exibir uma mensagem de erro)
+            console.error('Falha no login');
+        }
     }
 
     // Resetar os campos após a submissão
@@ -70,15 +86,12 @@ const resetFields = () => {
                 <div v-if="isAuthForm">
                     <TextInput id="name" v-model="userName" label="Nome" placeholder="Seu nome" />
                     <TextInput id="email" v-model="userEmail" label="Email" placeholder="Seu email" type="email" />
-                    <TextInput id="password" v-model="userPassword" label="Senha" placeholder="Sua senha"
-                        type="password" />
+                    <TextInput id="password" v-model="userPassword" label="Senha" placeholder="Sua senha" type="password" />
                 </div>
 
                 <div v-else>
-                    <TextInput id="loginEmail" v-model="loginEmail" label="Email" placeholder="Seu email"
-                        type="email" />
-                    <TextInput id="loginPassword" v-model="loginPassword" label="Senha" placeholder="Sua senha"
-                        type="password" />
+                    <TextInput id="loginEmail" v-model="loginEmail" label="Email" placeholder="Seu email" type="email" />
+                    <TextInput id="loginPassword" v-model="loginPassword" label="Senha" placeholder="Sua senha" type="password" />
                 </div>
 
                 <Button type="submit" class="w-full mt-4">
