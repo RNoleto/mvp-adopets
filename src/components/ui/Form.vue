@@ -98,6 +98,5 @@ const savePet = async () => {
         <Button variant="secondary" class="w-36">Cancelar</Button>
       </DialogClose>
     </div>
-    <pre> Dados do pet: {{ petData }}</pre>
   </div>
 </template>
