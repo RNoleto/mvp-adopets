@@ -8,26 +8,32 @@ import dayjs from 'dayjs';
 import TextInput from './TextInput.vue';
 import DatePickerInput from './DatePickerInput.vue';
 import Button from './Button.vue';
-import RadioGroup from './RadioGroup.vue';
+
+// Componentes Ui
+import Select from './Select.vue';
 
 // Variáveis reativas para armazenar os dados do formulário
 const petData = ref({
   name: '',
   chip_number: '',
-  birth: '01/12/2019',
-  specie: 'Canina', // Especie padrão definida como "Canina"
+  birth: '',
+  specie: '',
   breed: '',
-  gender: 'F', // Sexo padrão definido como "F"
+  gender: '',
+  is_castred: '',
+  size: '',
   status: 1,
   ref_id_user: 1, // ID do usuário
   ativo: 1 // Ativo padrão
 });
 
-// Função para salvar os dados do pet
-const savePet = async () => {
-  // Garantir que a data está no formato YYYY-MM-DD
-  petData.value.birth = dayjs(petData.value.birth).format('YYYY-MM-DD');
+const speciesOptions = ['Cachorro', 'Gato'];
+const genderOptions = ['Macho', 'Femea'];
+const castredOptions = ['Sim', 'Não'];
+const sizeOptions = ['Pequeno', 'Médio', 'Grande', 'Gigante'];
 
+// Função para salvar os dados do pet
+const savePet = async () => {  
   try {
     const response = await axios.post('/animals', petData.value);
     console.log('Pet cadastrado com sucesso:', response.data);
@@ -48,54 +54,40 @@ const savePet = async () => {
       <TextInput type="number" label="Nº do Chip" id="petChip" v-model="petData.chip_number" />
       
       <!-- Campo de Espécie do Pet -->
-      <RadioGroup 
-        groupLabel="Espécie do Pet"
+      <Select
+        selectLabel="Espécie do Pet"
         v-model="petData.specie"
-        :options="[ 
-          { label: 'Canina', value: 'Canina' }, 
-          { label: 'Felina', value: 'Felina' } 
-        ]"
-        defaultValue="Canina"
+        :options="speciesOptions"
+        label="Selecione uma opção"
       />
-      
+      <!-- Campo de Sexo do Pet -->
+      <Select
+        selectLabel="Sexo do Pet"
+        v-model="petData.gender"
+        :options="genderOptions"
+        label="Selecione uma opção"
+      />
+
       <!-- Campo de Raça do Pet -->
       <TextInput label="Raça do Pet" id="breedPet" v-model="petData.breed" required />
       
       <!-- Campo de Data de Nascimento do Pet -->
-      <DatePickerInput label="Data de Nascimento" id="birthDate" v-model="petData.birth" required />
-      
-      <!-- Campo de Sexo do Pet -->
-      <RadioGroup
-        groupLabel="Sexo do Pet"
-        v-model="petData.gender"
-        :options="[ 
-          { label: 'Macho', value: 'M' }, 
-          { label: 'Fêmea', value: 'F' } 
-        ]"
-        defaultValue="F"
-      />
+       <TextInput type="date" class="w-1" label="Data de Nascimento" id="birthDate" v-model="petData.birth" required />
       
       <!-- Campo para Castrado -->
-      <RadioGroup
-        groupLabel="Castrado"
-        v-model="petData.is_castrated"
-        :options="[ 
-          { label: 'Sim', value: 'S' }, 
-          { label: 'Não', value: 'N' } 
-        ]"
-        defaultValue="N"
+      <Select
+        selectLabel="Castrado?"
+        v-model="petData.is_castred"
+        :options="castredOptions"
+        label="Selecione uma opção"
       />
       
       <!-- Campo para Tamanho do Pet -->
-      <RadioGroup
-        groupLabel="Tamanho do Pet"
-        v-model="petData.pet_size"
-        :options="[ 
-          { label: 'Pequeno', value: 'small' }, 
-          { label: 'Médio', value: 'medium' }, 
-          { label: 'Grande', value: 'large' } 
-        ]"
-        defaultValue="small"
+      <Select
+        selectLabel="Tamanho do Pet"
+        v-model="petData.size"
+        :options="sizeOptions"
+        label="Selecione uma opção"
       />
     </div>
     
@@ -106,5 +98,6 @@ const savePet = async () => {
         <Button variant="secondary" class="w-36">Cancelar</Button>
       </DialogClose>
     </div>
+    <pre> Dados do pet: {{ petData }}</pre>
   </div>
 </template>
