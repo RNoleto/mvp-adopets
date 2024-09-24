@@ -1,20 +1,44 @@
 <script setup>
+// Padrão
+import { ref, onMounted } from 'vue';
+import axios from 'axios';
+import dayjs from 'dayjs';
 // Imagens
 import logoAdopets from '../assets/Adopets.svg'
 // Components UI
 import Dialog from './ui/Dialog.vue';
 import Form from './ui/Form.vue';
-import TextInput from './ui/TextInput.vue';
-import DatePickerInput from './ui/DatePickerInput.vue';
 import Button from './ui/Button.vue';
 import Combobox from './ui/Combobox.vue';
 import { Icon } from '@iconify/vue/dist/iconify.js';
 // Componentes
 import { DialogClose, DialogContent, DialogDescription, DialogOverlay, DialogPortal, DialogRoot, DialogTitle, DialogTrigger } from 'radix-vue';
 
+const pets = ref([]);
+
+//Função para buscar os pets da API
+const fetchPets = async () => {
+  try{
+    const response = await axios.get('/animals');
+    pets.value = response.data;
+  } catch(error){
+    console.log('Erro ao buscar pets:', error);
+  }
+};
+
+//Função para formatar a data
+function formatDate(date){
+  return dayjs(date).format('DD/MM/YYYY');
+}
+
+//Chamar a função ao montar o componente
+onMounted(() => {
+  fetchPets();
+});
+
+//Vacinas e medicamentos para o modal
 const vacines = ['Raiva', 'Giardia']
 const medicines = ['Antipulgas', 'Vermifugo']
-
 </script>
 
 <template>
@@ -24,18 +48,18 @@ const medicines = ['Antipulgas', 'Vermifugo']
             <div class="flex gap-1 font-bold w-[360px]">
                 <p>Meus Pets</p>
             </div>
-            <div class="flex flex-col gap-1 w-[360px]">
-                <hr>
+            <!-- Lista de pets cadatrados -->
+            <div class="flex flex-col w-[360px] bg-zinc-800 px-2 py-1 rounded-md" v-for="pet in pets" :key="pet.id">
                 <DialogRoot>
                     <DialogTrigger>
                         <div class="flex justify-between items-baseline">
-                            <p class="text-xl font-semibold">Snow</p>
-                            <p class="text-sm">7 Anos</p>
+                            <p class="text-xl font-semibold">{{ pet.name }}</p>
+                            <p class="text-sm">{{ formatDate(pet.birth) }}</p>
                         </div>
                         <div class="flex justify-between gap-2">
-                            <p class="text-sm font-semibold">Macho</p>
-                            <p class="text-sm font-semibold">Cachorro</p>
-                            <p class="text-sm font-thin">21131321331</p>
+                          <p class="text-sm font-semibold">{{ pet.specie }}</p>
+                            <p class="text-sm font-semibold">{{ pet.gender }}</p>
+                            <p class="text-sm font-thin">{{  pet.chip_number }}</p>
                         </div>
                     </DialogTrigger>
                     <DialogPortal>
@@ -43,15 +67,15 @@ const medicines = ['Antipulgas', 'Vermifugo']
 
                         <!-- Conteúdo do Dialog com detalhes do pet -->
                         <DialogContent class="fixed z-60 right-0 top-0 bottom-0 w-[400px] h-screen border-l border-zinc-900 bg-zinc-950 p-8">
-                            <DialogTitle class="text-xl font-semibold">Snow</DialogTitle>
+                            <DialogTitle class="text-xl font-semibold">{{ pet.name }}</DialogTitle>
                             <DialogDescription class=" text-zinc-400 text-sm leading-relaxed flex flex-col h-full">
-                                <p>Detalhes sobre Snow</p>
+                                <p>Detalhes sobre {{ pet.name }}</p>
                                 <hr>
                                 <div class="py-2">
-                                    <p><span class="mr-2 text-base text-white font-semibold">Idade:</span>7 Anos</p>
-                                    <p><span class="mr-2 text-base text-white font-semibold">Sexo:</span> Macho</p>
-                                    <p><span class="mr-2 text-base text-white font-semibold">Espécie:</span> Cachorro</p>
-                                    <p><span class="mr-2 text-base text-white font-semibold">ID:</span> 21131321331</p>
+                                    <p><span class="mr-2 text-base text-white font-semibold">Idade:</span>{{ formatDate(pet.birth) }}</p>
+                                    <p><span class="mr-2 text-base text-white font-semibold">Sexo:</span> {{ pet.gender }}</p>
+                                    <p><span class="mr-2 text-base text-white font-semibold">Espécie:</span> {{ pet.specie }}</p>
+                                    <p><span class="mr-2 text-base text-white font-semibold">Nº Chip:</span> {{ pet.chip_number }}</p>
                                 </div>
                                 <hr>
                                 <!-- Criar UI ou não? -->
@@ -81,7 +105,7 @@ const medicines = ['Antipulgas', 'Vermifugo']
                         </DialogContent>
                     </DialogPortal>
                 </DialogRoot>
-                <hr>            
+                            
             </div>
         </div>
         <!-- Formulario para cadastar novo pet -->
