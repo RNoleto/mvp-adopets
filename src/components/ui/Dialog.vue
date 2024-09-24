@@ -30,7 +30,7 @@ defineProps({
 <template>
   <DialogRoot>
     <!-- Trigger do Dialog -->
-    <DialogTrigger>
+    <DialogTrigger class="w-full">
       <Button variant="primary" size="default" class="w-full">{{ buttonText }}</Button>
     </DialogTrigger>
 

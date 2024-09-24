@@ -44,12 +44,12 @@ const medicines = ['Antipulgas', 'Vermifugo']
 <template>
     <div class="h-screen flex flex-col items-center justify-center">
         <img :src="logoAdopets" alt="logo-adopets" class="w-[80px] mb-5">
-        <div class="flex flex-col gap-3 mb-5">
+        <div class="w-[360px] flex flex-col gap-3 mb-5">
             <div class="flex gap-1 font-bold w-[360px]">
                 <p>Meus Pets</p>
             </div>
             <!-- Lista de pets cadatrados -->
-            <div class="flex flex-col w-[360px] bg-zinc-800 px-2 py-1 rounded-md" v-for="pet in pets" :key="pet.id">
+            <div class="flex flex-col w-[360px] bg-zinc-800 px-2 py-1 rounded-md hover:bg-zinc-700" v-for="pet in pets" :key="pet.id">
                 <DialogRoot>
                     <DialogTrigger>
                         <div class="flex justify-between items-baseline">
@@ -107,16 +107,16 @@ const medicines = ['Antipulgas', 'Vermifugo']
                 </DialogRoot>
                             
             </div>
-        </div>
-        <!-- Formulario para cadastar novo pet -->
-        <div class="w-[360px]">
-            <Dialog
-                title="Cadastrar meu Pet"
-                description="Detalhes do meu pet"
-                buttonText="Cadastrar Novo Pet"
-            >
-                <Form />
-            </Dialog>
+            <!-- Formulario para cadastar novo pet -->
+            <div>
+                <Dialog
+                    title="Cadastrar meu Pet"
+                    description="Detalhes do meu pet"
+                    buttonText="Cadastrar Novo Pet"
+                >
+                    <Form />
+                </Dialog>
+            </div>
         </div>
     </div>
 </template>

@@ -7,15 +7,17 @@ import Form from './ui/Form.vue';
 
 <template>
     <div class="h-screen flex flex-col items-center justify-center gap-8">
-        <img :src="logoAdopets" alt="logo-adopets" class="w-[80px]">
-        <img :src="letsStart" alt="adopets">
-        <p class="text-zinc-300 leading-relaxed max-w-80 text-center">Você ainda não cadastrou nenhum Pet</p>
-        <Dialog
-            title="Cadastrar meu Pet"
-            description="Detalhes do meu pet"
-            buttonText="Cadastrar Novo Pet"
-        >
-            <Form />
-        </Dialog>
+        <div class="w-[360px] flex flex-col items-center gap-8 justify-center">
+            <img :src="logoAdopets" alt="logo-adopets" class="w-[80px]">
+            <img :src="letsStart" alt="adopets">
+            <p class="text-zinc-300 leading-relaxed max-w-80 text-center">Você ainda não cadastrou nenhum Pet</p>
+            <Dialog
+                title="Cadastrar meu Pet"
+                description="Detalhes do meu pet"
+                buttonText="Cadastrar Novo Pet"
+            >
+                <Form />
+            </Dialog>
+        </div>
     </div>
 </template>
