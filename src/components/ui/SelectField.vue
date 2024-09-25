@@ -45,13 +45,13 @@ const handleChange = () => {
 
 <template>
     <div class="select-field">
-        <label v-if="label" :for="id" class="block text-base text-white font-semibold">
+        <label v-if="label" :for="id" class="block text-base text-zinc-800 font-semibold">
             {{ label }}
         </label>
         <select 
             :id="id"
             v-model="selectedValue"
-            class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outiline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+            class="block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outiline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
             @change="handleChange"
             >
                 <option disable value="">{{ placeholder }}</option>

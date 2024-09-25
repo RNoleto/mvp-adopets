@@ -91,13 +91,13 @@ const removeItem = (index, type) => {
 
 <template>
     <div class="h-screen flex flex-col items-center justify-center">
-        <img :src="logoAdopets" alt="logo-adopets" class="w-[80px] mb-5">
+        <h2 class="text-2xl font-semibold">Adopets!</h2>
         <div class="w-[360px] flex flex-col gap-3 mb-5">
             <div class="flex gap-1 font-bold w-[360px]">
                 <p>Meus Pets</p>
             </div>
             <!-- Lista de pets cadatrados -->
-            <div class="flex flex-col w-[360px] bg-zinc-800 px-2 py-1 rounded-md hover:bg-zinc-700" v-for="pet in pets"
+            <div class="flex flex-col w-[360px] bg-zinc-300 px-2 py-1 rounded-md hover:bg-zinc-400 hover:text-zinc-100" v-for="pet in pets"
                 :key="pet.id">
                 <DialogRoot>
                     <DialogTrigger>
@@ -116,19 +116,19 @@ const removeItem = (index, type) => {
 
                         <!-- Conteúdo do Dialog com detalhes do pet -->
                         <DialogContent
-                            class="fixed z-60 right-0 top-0 bottom-0 w-[400px] h-screen border-l border-zinc-900 bg-zinc-950 p-8">
-                            <DialogTitle class="text-xl font-semibold">{{ pet.name }}</DialogTitle>
-                            <DialogDescription class=" text-zinc-400 text-sm leading-relaxed flex flex-col h-full">
+                            class="fixed z-60 right-0 top-0 bottom-0 w-[400px] h-screen border-l border-zinc-600 bg-zinc-300 p-8">
+                            <DialogTitle class="text-xl font-semibold text-zinc-900">{{ pet.name }}</DialogTitle>
+                            <DialogDescription class=" text-zinc-800 text-sm leading-relaxed flex flex-col h-full">
                                 <p>Detalhes sobre {{ pet.name }}</p>
                                 <hr>
                                 <div class="py-2">
-                                    <p><span class="mr-2 text-base text-white font-semibold">Idade:</span>{{
+                                    <p><span class="mr-2 text-base text-zinc-900 font-semibold">Idade:</span>{{
                                         formatDate(pet.birth) }}</p>
-                                    <p><span class="mr-2 text-base text-white font-semibold">Sexo:</span> {{ pet.gender
+                                    <p><span class="mr-2 text-base text-zinc-900 font-semibold">Sexo:</span> {{ pet.gender
                                         }}</p>
-                                    <p><span class="mr-2 text-base text-white font-semibold">Espécie:</span> {{
+                                    <p><span class="mr-2 text-base text-zinc-900 font-semibold">Espécie:</span> {{
                                         pet.specie }}</p>
-                                    <p><span class="mr-2 text-base text-white font-semibold">Nº Chip:</span> {{
+                                    <p><span class="mr-2 text-base text-zinc-900 font-semibold">Nº Chip:</span> {{
                                         pet.chip_number }}</p>
                                 </div>
                                 <hr>
@@ -140,7 +140,7 @@ const removeItem = (index, type) => {
 
                                     <!-- Exibe os campos para adicionar nova vacina ou medicação -->
                                     <div v-if="selectedOption !== ''"
-                                        class="mt-4 flex flex-col align-center gap-2 items-center">
+                                        class="mt-2 flex flex-col align-center gap-2 items-center">
                                         <div class="flex gap-2">
                                             <TextInput type="text" v-model="itemName"
                                                 :label="`Nome do ${selectedOption}`" />
@@ -153,8 +153,7 @@ const removeItem = (index, type) => {
                                         <!-- Lista de vacinas ou medicamentos adicionados -->
                                         <div class="w-full mt-4">
                                             <hr>
-                                            <h3 class="text-base font-semibold text-white mb-2">Itens Adicionados</h3>
-
+                                            <h3 class="text-base font-semibold text-zinc-900 mb-2">Itens Adicionados</h3>
                                             <!-- Lista de vacinas -->
                                             <div v-if="addedVaccines.length">
                                                 <h4 class="text-base font-semibold text-blue-500 mb-2">Vacinas</h4>
@@ -174,7 +173,7 @@ const removeItem = (index, type) => {
 
                                             <!-- Lista de medicamentos -->
                                             <div v-if="addedMedications.length" class="mt-4">
-                                                <h4 class="text-base font-semibold text-green-500 mb-2">Medicamentos
+                                                <h4 class="text-base font-semibold text-green-700 mb-2">Medicamentos
                                                 </h4>
                                                 <ul>
                                                     <li v-for="(medication, index) in addedMedications"

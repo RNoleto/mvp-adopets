@@ -52,7 +52,7 @@ watch(selectedValue, (newValue) => {
 <template>
     <div class="flex flex-col">
         <SelectRoot v-model="selectedValue">
-          <label class="text-sm font-semibold text-white">{{ selectLabel }}</label>
+          <label class="text-sm font-semibold text-zinc-800">{{ selectLabel }}</label>
           <SelectTrigger
           class="inline-flex min-w-[160px] items-center justify-between rounded-lg px-[15px] text-[13px] leading-none h-[35px] gap-[5px] bg-white text-grass11 shadow-[0_2px_10px] shadow-black/10 hover:bg-mauve3 focus:shadow-[0_0_0_2px] focus:shadow-black data-[placeholder]:text-green9 outline-none"
           aria-label="Customise options"

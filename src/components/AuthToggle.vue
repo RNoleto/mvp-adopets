@@ -2,7 +2,6 @@
 import { ref } from 'vue';
 import { useRouter } from 'vue-router'; // Importa useRouter
 import axios from 'axios'; // Importa axios para fazer as chamadas à API
-import logo from '../assets/Adopets.svg'; // Importa a logo
 
 // Componente UI
 import Button from './ui/Button.vue';
@@ -91,7 +90,6 @@ const resetFields = () => {
 <template>
     <div class="auth-container flex flex-col items-center justify-center h-screen">
         <h2 class="text-2xl font-semibold mb-4">Bem-vindo ao Adopets!</h2>
-
         <div class="flex space-x-4 mb-4" v-if="!isFormVisible"> <!-- Mostra os botões apenas quando os formulários não estão visíveis -->
             <Button @click="showAuthForm" class="w-full" :variant="isAuthForm ? 'primary' : 'secondary'">
                 Criar Cadastro

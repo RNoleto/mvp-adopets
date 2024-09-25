@@ -37,20 +37,17 @@ defineProps({
     <!-- Portal e Overlay -->
     <DialogPortal>
       <DialogOverlay class="fixed inset-0 z-60 bg-black/40 backdrop-blur-sm" />
-
       <!-- Conteúdo do Dialog -->
-      <DialogContent class="fixed z-60 right-0 top-0 bottom-0 w-[400px] h-screen border-l border-zinc-900 bg-zinc-950 p-8">
+      <DialogContent class="fixed z-60 right-0 top-0 bottom-0 w-[400px] h-screen border-l border-zinc-900 bg-zinc-300 p-8">
         <!-- Título e Descrição -->
-        <DialogTitle class="text-lg font-semibold">{{ title }}</DialogTitle>
-        <DialogDescription class="text-zinc-400 text-sm leading-relaxed">
+        <DialogTitle class="text-lg font-semibold text-zinc-800">{{ title }}</DialogTitle>
+        <DialogDescription class="text-zinc-800 text-sm leading-relaxed">
           {{ description }}
-        </DialogDescription>
-        
+        </DialogDescription>        
         <!-- Botão para fechar o Dialog -->
         <DialogClose as="button" class="absolute top-2 right-2">X</DialogClose>
         <!-- Slot para conteúdo personalizado -->
-        <hr>
-        <slot />
+        <slot></slot>
       </DialogContent>
     </DialogPortal>
   </DialogRoot>
