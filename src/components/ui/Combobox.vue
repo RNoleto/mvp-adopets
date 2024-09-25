@@ -16,11 +16,11 @@ const props = defineProps({
   },
   label1: {
     type: String,
-    default: 'Fruits'
+    default: 'Grupo 1'
   },
   label2: {
     type: String,
-    default: 'Vegetables'
+    default: 'Grupo 2'
   },
   placeholder: {
     type: String,
