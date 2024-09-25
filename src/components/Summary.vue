@@ -3,8 +3,6 @@
 import { ref, onMounted } from 'vue';
 import axios from 'axios';
 import dayjs from 'dayjs';
-// Imagens
-import logoAdopets from '../assets/Adopets.svg'
 // Components UI
 import Dialog from './ui/Dialog.vue';
 import Form from './ui/Form.vue';
@@ -16,6 +14,8 @@ import TextInput from './ui/TextInput.vue';
 import { DialogClose, DialogContent, DialogDescription, DialogOverlay, DialogPortal, DialogRoot, DialogTitle, DialogTrigger } from 'radix-vue';
 
 const pets = ref([]);
+const vaccinesList = ref([]);
+const medicinesList = ref([]);
 
 //Função para buscar os pets da API
 const fetchPets = async () => {
@@ -26,9 +26,6 @@ const fetchPets = async () => {
         console.log('Erro ao buscar pets:', error);
     }
 };
-
-//Função para salvar informações de Vacinas e Medicamentos dos pets
-
 
 //Função para formatar a data
 function formatDate(date) {
@@ -46,6 +43,8 @@ const selectedOption = ref('');
 // Variáveis para armazenar o nome e a data do item atual
 const itemName = ref('');
 const itemDate = ref('');
+const vaccineLocation = ref('');
+const medicineName = ref('');
 
 // Arrays separados para armazenar vacinas e medicamentos
 const addedVaccines = ref([]);
@@ -67,14 +66,18 @@ const addItem = () => {
             };
 
             if (selectedOption.value === 'Vacina') {
+                newItem.location = vaccineLocation.value;
                 addedVaccines.value.push(newItem);
             } else if (selectedOption.value === 'Medicamento') {
+                newItem.medicine = medicineName.value;
                 addedMedications.value.push(newItem);
             }
 
             // Limpar os campos de input após adicionar
             itemName.value = '';
             itemDate.value = '';
+            vaccineLocation.value = '';
+            medicineName.value = '';
         }
     }
 };
@@ -86,7 +89,55 @@ const removeItem = (index, type) => {
     } else if (type === 'Medicamento') {
         addedMedications.value.splice(index, 1);
     }
-}
+};
+
+//Função para salvar informações de Vacinas e Medicamentos dos pets
+const saveInfos = async (petId) => {
+    try{
+        //Salvar Vacinas
+        for(const vaccine of addedVaccines.value){
+            await axios.post('/vaccines', {
+                name:vaccine.name,
+                local: vaccine.local,
+                date: vaccine.date,
+                local: vaccine.location,
+                ref_id_animal: petId
+            });
+        }
+
+        //Salvar Medicamentos
+        for(const medication of addedMedications.value){
+            await axios.post('/medicines', {
+                name: medication.name,
+                date: medication.date,
+                medicine: medication.medicine,
+                ref_id_animal: petId
+            });
+        }
+
+        alert('Itens salvos com sucesso!');
+                
+    }catch(error){
+        console.log('Erro ao salvar informações do pet:', error);
+        alert('Erro ao salvar itens. Tente novamente.');
+    }
+};
+
+//Função para retornar as Vacinas e Medicamentos do pet selecionado
+const fetchInfos = async (petId) => {
+    try {
+        // Busca vacinas do pet
+        const vaccinesResponse = await axios.get(`/vaccines/pet/${petId}`);
+        vaccinesList.value = vaccinesResponse.data;
+
+        // Busca medicamentos do pet
+        const medicinesResponse = await axios.get(`/medicines/pet/${petId}`);
+        medicinesList.value = medicinesResponse.data;
+
+    } catch (error) {
+        console.log('Erro ao buscar vacinas e medicamentos:', error);
+    }
+};
 </script>
 
 <template>
@@ -100,7 +151,7 @@ const removeItem = (index, type) => {
             <div class="flex flex-col w-[360px] bg-zinc-300 px-2 py-1 rounded-md hover:bg-zinc-400 hover:text-zinc-100" v-for="pet in pets"
                 :key="pet.id">
                 <DialogRoot>
-                    <DialogTrigger>
+                    <DialogTrigger @click="fetchInfos(pet.id)">
                         <div class="flex justify-between items-baseline">
                             <p class="text-xl font-semibold">{{ pet.name }}</p>
                             <p class="text-sm">{{ formatDate(pet.birth) }}</p>
@@ -143,8 +194,14 @@ const removeItem = (index, type) => {
                                         class="mt-2 flex flex-col align-center gap-2 items-center">
                                         <div class="flex gap-2">
                                             <TextInput type="text" v-model="itemName"
-                                                :label="`Nome do ${selectedOption}`" />
+                                            :label="`Nome do ${selectedOption}`" />
                                             <TextInput label="Data" type="date" v-model="itemDate" />
+                                        </div>
+                                        <div v-if="selectedOption === 'Vacina'"  class="w-full">
+                                            <TextInput label="Local" type="text" placeholder="Nome da Clínica" v-model="vaccineLocation" />
+                                        </div>
+                                        <div v-if="selectedOption === 'Medicamento'"  class="w-full">
+                                            <TextInput label="Tipo de Medicamento" placeholder="Vermifugo, antipulgas, etc..." type="text" v-model="medicineName" />
                                         </div>
                                         <div class="w-full">
                                             <Button @click="addItem" variant="primary" size="default"
@@ -191,8 +248,25 @@ const removeItem = (index, type) => {
                                         </div>
                                     </div>
                                 </div>
+                                <div class="mt-4">
+        <h4 class="text-lg font-semibold text-blue-500">Vacinas Registradas</h4>
+        <ul v-if="vaccinesList.length">
+            <li v-for="(vaccine, index) in vaccinesList" :key="`vacina-${index}`">
+                <p>{{ vaccine.name }} - {{ formatDate(vaccine.date) }} - {{ vaccine.location }}</p>
+            </li>
+        </ul>
+        <p v-else>Nenhuma vacina registrada.</p>
+
+        <h4 class="text-lg font-semibold text-green-500 mt-4">Medicamentos Registrados</h4>
+        <ul v-if="medicinesList.length">
+            <li v-for="(medicine, index) in medicinesList" :key="`medicamento-${index}`">
+                <p>{{ medicine.name }} - {{ formatDate(medicine.date) }} - {{ medicine.medicine }}</p>
+            </li>
+        </ul>
+        <p v-else>Nenhum medicamento registrado.</p>
+    </div>
                                 <div class="mt-4 flex gap-2 py-2">
-                                    <Button variant="primary" size="default" class="w-full">Salvar</Button>
+                                    <Button @click="saveInfos(pet.id)" variant="primary" size="default" class="w-full">Salvar</Button>
                                     <DialogClose class="w-full">
                                         <Button variant="secondary" size="default" class="w-full">Cancelar</Button>
                                     </DialogClose>

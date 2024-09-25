@@ -7,6 +7,10 @@ const props = defineProps({
     type: String,
     default: 'text', // Definindo o padrão como 'text'
   },
+  placeholder: {
+    type: String,
+    default: 'Escreva aqui',
+  }
 });
 
 const emit = defineEmits(['update:modelValue']);
@@ -18,6 +22,7 @@ const emit = defineEmits(['update:modelValue']);
     <input
       :id="id"
       :type="type"
+      :placeholder="placeholder"
       class="w-full bg-blackA5 shadow-blackA9 inline-flex appearance-none items-center justify-center rounded-lg p-2 text-sm leading-none text-zinc-500 outline-none"
       :value="modelValue"
       @input="$emit('update:modelValue', $event.target.value)"
