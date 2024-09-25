@@ -93,11 +93,11 @@ const removeItem = (index, type) => {
 
 //Função para salvar informações de Vacinas e Medicamentos dos pets
 const saveInfos = async (petId) => {
-    try{
+    try {
         //Salvar Vacinas
-        for(const vaccine of addedVaccines.value){
+        for (const vaccine of addedVaccines.value) {
             await axios.post('/vaccines', {
-                name:vaccine.name,
+                name: vaccine.name,
                 local: vaccine.local,
                 date: vaccine.date,
                 local: vaccine.location,
@@ -106,7 +106,7 @@ const saveInfos = async (petId) => {
         }
 
         //Salvar Medicamentos
-        for(const medication of addedMedications.value){
+        for (const medication of addedMedications.value) {
             await axios.post('/medicines', {
                 name: medication.name,
                 date: medication.date,
@@ -116,12 +116,22 @@ const saveInfos = async (petId) => {
         }
 
         alert('Itens salvos com sucesso!');
-                
-    }catch(error){
+
+    } catch (error) {
         console.log('Erro ao salvar informações do pet:', error);
         alert('Erro ao salvar itens. Tente novamente.');
     }
 };
+
+const limparInfos = async (petid) => {
+     // Limpar os campos de input após adicionar
+            itemName.value = '';
+            itemDate.value = '';
+            vaccineLocation.value = '';
+            medicineName.value = '';
+            vaccinesList.value = '';
+            medicinesList.value = '';
+}
 
 //Função para retornar as Vacinas e Medicamentos do pet selecionado
 const fetchInfos = async (petId) => {
@@ -148,8 +158,8 @@ const fetchInfos = async (petId) => {
                 <p>Meus Pets</p>
             </div>
             <!-- Lista de pets cadatrados -->
-            <div class="flex flex-col w-[360px] bg-zinc-300 px-2 py-1 rounded-md hover:bg-zinc-400 hover:text-zinc-100" v-for="pet in pets"
-                :key="pet.id">
+            <div class="flex flex-col w-[360px] bg-zinc-300 px-2 py-1 rounded-md hover:bg-zinc-400 hover:text-zinc-100"
+                v-for="pet in pets" :key="pet.id">
                 <DialogRoot>
                     <DialogTrigger @click="fetchInfos(pet.id)">
                         <div class="flex justify-between items-baseline">
@@ -175,7 +185,8 @@ const fetchInfos = async (petId) => {
                                 <div class="py-2">
                                     <p><span class="mr-2 text-base text-zinc-900 font-semibold">Idade:</span>{{
                                         formatDate(pet.birth) }}</p>
-                                    <p><span class="mr-2 text-base text-zinc-900 font-semibold">Sexo:</span> {{ pet.gender
+                                    <p><span class="mr-2 text-base text-zinc-900 font-semibold">Sexo:</span> {{
+                                        pet.gender
                                         }}</p>
                                     <p><span class="mr-2 text-base text-zinc-900 font-semibold">Espécie:</span> {{
                                         pet.specie }}</p>
@@ -194,14 +205,17 @@ const fetchInfos = async (petId) => {
                                         class="mt-2 flex flex-col align-center gap-2 items-center">
                                         <div class="flex gap-2">
                                             <TextInput type="text" v-model="itemName"
-                                            :label="`Nome do ${selectedOption}`" />
+                                                :label="`Nome do ${selectedOption}`" />
                                             <TextInput label="Data" type="date" v-model="itemDate" />
                                         </div>
-                                        <div v-if="selectedOption === 'Vacina'"  class="w-full">
-                                            <TextInput label="Local" type="text" placeholder="Nome da Clínica" v-model="vaccineLocation" />
+                                        <div v-if="selectedOption === 'Vacina'" class="w-full">
+                                            <TextInput label="Local" type="text" placeholder="Nome da Clínica"
+                                                v-model="vaccineLocation" />
                                         </div>
-                                        <div v-if="selectedOption === 'Medicamento'"  class="w-full">
-                                            <TextInput label="Tipo de Medicamento" placeholder="Vermifugo, antipulgas, etc..." type="text" v-model="medicineName" />
+                                        <div v-if="selectedOption === 'Medicamento'" class="w-full">
+                                            <TextInput label="Tipo de Medicamento"
+                                                placeholder="Vermifugo, antipulgas, etc..." type="text"
+                                                v-model="medicineName" />
                                         </div>
                                         <div class="w-full">
                                             <Button @click="addItem" variant="primary" size="default"
@@ -210,7 +224,8 @@ const fetchInfos = async (petId) => {
                                         <!-- Lista de vacinas ou medicamentos adicionados -->
                                         <div class="w-full mt-4">
                                             <hr>
-                                            <h3 class="text-base font-semibold text-zinc-900 mb-2">Itens Adicionados</h3>
+                                            <h3 class="text-base font-semibold text-zinc-900 mb-2">Itens Adicionados
+                                            </h3>
                                             <!-- Lista de vacinas -->
                                             <div v-if="addedVaccines.length">
                                                 <h4 class="text-base font-semibold text-blue-500 mb-2">Vacinas</h4>
@@ -249,26 +264,29 @@ const fetchInfos = async (petId) => {
                                     </div>
                                 </div>
                                 <div class="mt-4">
-        <h4 class="text-lg font-semibold text-blue-500">Vacinas Registradas</h4>
-        <ul v-if="vaccinesList.length">
-            <li v-for="(vaccine, index) in vaccinesList" :key="`vacina-${index}`">
-                <p>{{ vaccine.name }} - {{ formatDate(vaccine.date) }} - {{ vaccine.location }}</p>
-            </li>
-        </ul>
-        <p v-else>Nenhuma vacina registrada.</p>
+                                    <h4 class="text-lg font-semibold text-blue-500">Vacinas Registradas</h4>
+                                    <ul v-if="vaccinesList.length">
+                                        <li v-for="(vaccine, index) in vaccinesList" :key="`vacina-${index}`">
+                                            <p>{{ vaccine.name }} - {{ formatDate(vaccine.date) }} - {{ vaccine.location
+                                                }}</p>
+                                        </li>
+                                    </ul>
+                                    <p v-else>Nenhuma vacina registrada.</p>
 
-        <h4 class="text-lg font-semibold text-green-500 mt-4">Medicamentos Registrados</h4>
-        <ul v-if="medicinesList.length">
-            <li v-for="(medicine, index) in medicinesList" :key="`medicamento-${index}`">
-                <p>{{ medicine.name }} - {{ formatDate(medicine.date) }} - {{ medicine.medicine }}</p>
-            </li>
-        </ul>
-        <p v-else>Nenhum medicamento registrado.</p>
-    </div>
+                                    <h4 class="text-lg font-semibold text-green-500 mt-4">Medicamentos Registrados</h4>
+                                    <ul v-if="medicinesList.length">
+                                        <li v-for="(medicine, index) in medicinesList" :key="`medicamento-${index}`">
+                                            <p>{{ medicine.name }} - {{ formatDate(medicine.date) }} - {{
+                                                medicine.medicine }}</p>
+                                        </li>
+                                    </ul>
+                                    <p v-else>Nenhum medicamento registrado.</p>
+                                </div>
                                 <div class="mt-4 flex gap-2 py-2">
-                                    <Button @click="saveInfos(pet.id)" variant="primary" size="default" class="w-full">Salvar</Button>
+                                    <Button @click="saveInfos(pet.id)" variant="primary" size="default"
+                                        class="w-full">Salvar</Button>
                                     <DialogClose class="w-full">
-                                        <Button variant="secondary" size="default" class="w-full">Cancelar</Button>
+                                        <Button variant="secondary" size="default" class="w-full" @click="limparInfos(pet.id)">Cancelar</Button>
                                     </DialogClose>
                                 </div>
                             </DialogDescription>
