@@ -43,7 +43,6 @@ const selectedOption = ref('');
 // Variáveis para armazenar o nome e a data do item atual
 const itemName = ref('');
 const itemDate = ref('');
-const vaccineLocation = ref('');
 const medicineName = ref('');
 
 // Arrays separados para armazenar vacinas e medicamentos
@@ -66,18 +65,14 @@ const addItem = () => {
             };
 
             if (selectedOption.value === 'Vacina') {
-                newItem.location = vaccineLocation.value;
                 addedVaccines.value.push(newItem);
             } else if (selectedOption.value === 'Medicamento') {
-                newItem.medicine = medicineName.value;
                 addedMedications.value.push(newItem);
             }
 
             // Limpar os campos de input após adicionar
             itemName.value = '';
             itemDate.value = '';
-            vaccineLocation.value = '';
-            medicineName.value = '';
         }
     }
 };
@@ -98,9 +93,7 @@ const saveInfos = async (petId) => {
         for (const vaccine of addedVaccines.value) {
             await axios.post('/vaccines', {
                 name: vaccine.name,
-                local: vaccine.local,
                 date: vaccine.date,
-                local: vaccine.location,
                 ref_id_animal: petId
             });
         }
@@ -110,7 +103,6 @@ const saveInfos = async (petId) => {
             await axios.post('/medicines', {
                 name: medication.name,
                 date: medication.date,
-                medicine: medication.medicine,
                 ref_id_animal: petId
             });
         }
@@ -127,7 +119,6 @@ const limparInfos = async (petid) => {
      // Limpar os campos de input após adicionar
             itemName.value = '';
             itemDate.value = '';
-            vaccineLocation.value = '';
             medicineName.value = '';
             vaccinesList.value = '';
             medicinesList.value = '';
@@ -136,16 +127,26 @@ const limparInfos = async (petid) => {
 //Função para retornar as Vacinas e Medicamentos do pet selecionado
 const fetchInfos = async (petId) => {
     try {
-        // Busca vacinas do pet
-        const vaccinesResponse = await axios.get(`/vaccines/pet/${petId}`);
-        vaccinesList.value = vaccinesResponse.data;
+        const [vaccinesResponse, medicinesResponse] = await Promise.allSettled([
+            axios.get(`/vaccines/pet/${petId}`),
+            axios.get(`/medicines/pet/${petId}`)
+        ]);
 
-        // Busca medicamentos do pet
-        const medicinesResponse = await axios.get(`/medicines/pet/${petId}`);
-        medicinesList.value = medicinesResponse.data;
+        // Verifica o status de cada requisição
+        if (vaccinesResponse.status === 'fulfilled') {
+            vaccinesList.value = vaccinesResponse.value.data;
+        } else {
+            console.log('Nenhuma vacina encontrada ou erro ao buscar vacinas');
+        }
 
+        if (medicinesResponse.status === 'fulfilled') {
+            medicinesList.value = medicinesResponse.value.data;
+        } else {
+            console.log('Nenhum medicamento encontrado ou erro ao buscar medicamentos');
+        }
+        
     } catch (error) {
-        console.log('Erro ao buscar vacinas e medicamentos:', error);
+        console.log('Erro inesperado ao buscar informações do pet: ', error);
     }
 };
 </script>
@@ -183,15 +184,12 @@ const fetchInfos = async (petId) => {
                                 <p>Detalhes sobre {{ pet.name }}</p>
                                 <hr>
                                 <div class="py-2">
-                                    <p><span class="mr-2 text-base text-zinc-900 font-semibold">Idade:</span>{{
-                                        formatDate(pet.birth) }}</p>
-                                    <p><span class="mr-2 text-base text-zinc-900 font-semibold">Sexo:</span> {{
-                                        pet.gender
-                                        }}</p>
-                                    <p><span class="mr-2 text-base text-zinc-900 font-semibold">Espécie:</span> {{
-                                        pet.specie }}</p>
-                                    <p><span class="mr-2 text-base text-zinc-900 font-semibold">Nº Chip:</span> {{
-                                        pet.chip_number }}</p>
+                                    <p><span class="mr-2 text-base text-zinc-900 font-semibold">Espécie:</span> {{pet.specie }}</p>
+                                    <p><span class="mr-2 text-base text-zinc-900 font-semibold">Raça:</span>{{ pet.breed }}</p>
+                                    <p><span class="mr-2 text-base text-zinc-900 font-semibold">Sexo:</span> {{pet.gender}}</p>
+                                    <p><span class="mr-2 text-base text-zinc-900 font-semibold">Idade:</span>{{formatDate(pet.birth) }}</p>
+                                    <p v-if="pet.chip_number !== null"><span class="mr-2 text-base text-zinc-900 font-semibold">Nº Chip:</span> {{pet.chip_number }}</p>
+                                    <p v-else><span class="mr-2 text-base text-zinc-900 font-semibold">Nº Chip:</span> Não informado</p>
                                 </div>
                                 <hr>
                                 <!-- Criar UI para medicamentos e vacinas? -->
@@ -207,15 +205,6 @@ const fetchInfos = async (petId) => {
                                             <TextInput type="text" v-model="itemName"
                                                 :label="`Nome do ${selectedOption}`" />
                                             <TextInput label="Data" type="date" v-model="itemDate" />
-                                        </div>
-                                        <div v-if="selectedOption === 'Vacina'" class="w-full">
-                                            <TextInput label="Local" type="text" placeholder="Nome da Clínica"
-                                                v-model="vaccineLocation" />
-                                        </div>
-                                        <div v-if="selectedOption === 'Medicamento'" class="w-full">
-                                            <TextInput label="Tipo de Medicamento"
-                                                placeholder="Vermifugo, antipulgas, etc..." type="text"
-                                                v-model="medicineName" />
                                         </div>
                                         <div class="w-full">
                                             <Button @click="addItem" variant="primary" size="default"
@@ -263,21 +252,18 @@ const fetchInfos = async (petId) => {
                                         </div>
                                     </div>
                                 </div>
-                                <div class="mt-4">
+                                <div class="mt-4 p-2 rounded-xl bg-zinc-200">
                                     <h4 class="text-lg font-semibold text-blue-500">Vacinas Registradas</h4>
                                     <ul v-if="vaccinesList.length">
                                         <li v-for="(vaccine, index) in vaccinesList" :key="`vacina-${index}`">
-                                            <p>{{ vaccine.name }} - {{ formatDate(vaccine.date) }} - {{ vaccine.location
-                                                }}</p>
+                                            <p>{{ vaccine.name }} - {{ formatDate(vaccine.date) }}</p>
                                         </li>
                                     </ul>
                                     <p v-else>Nenhuma vacina registrada.</p>
-
                                     <h4 class="text-lg font-semibold text-green-500 mt-4">Medicamentos Registrados</h4>
                                     <ul v-if="medicinesList.length">
                                         <li v-for="(medicine, index) in medicinesList" :key="`medicamento-${index}`">
-                                            <p>{{ medicine.name }} - {{ formatDate(medicine.date) }} - {{
-                                                medicine.medicine }}</p>
+                                            <p>{{ medicine.name }} - {{ formatDate(medicine.date) }}</p>
                                         </li>
                                     </ul>
                                     <p v-else>Nenhum medicamento registrado.</p>
