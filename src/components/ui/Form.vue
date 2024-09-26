@@ -1,12 +1,11 @@
 <script setup>
 import { ref } from 'vue';
+import { useRouter } from 'vue-router';
 import { DialogClose } from 'radix-vue';
 import axios from 'axios';
-import dayjs from 'dayjs';
 
 // Componentes importados
 import TextInput from './TextInput.vue';
-import DatePickerInput from './DatePickerInput.vue';
 import Button from './Button.vue';
 
 // Componentes Ui
@@ -33,10 +32,13 @@ const castredOptions = ['Sim', 'Não'];
 const sizeOptions = ['Pequeno', 'Médio', 'Grande', 'Gigante'];
 
 // Função para salvar os dados do pet
+const router = useRouter();
+
 const savePet = async () => {  
   try {
     const response = await axios.post('/animals', petData.value);
     console.log('Pet cadastrado com sucesso:', response.data);
+    router.push('/summary');
   } catch (error) {
     console.error('Erro ao cadastrar o Pet:', error.response.data);
     console.log("Dados do Pet cadastrado: ", petData.value);
