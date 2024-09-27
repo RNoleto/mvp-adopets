@@ -10,6 +10,10 @@ import Button from './ui/Button.vue';
 import SelectField from './ui/SelectField.vue';
 import TextInput from './ui/TextInput.vue';
 
+import { useUserStore } from '../stores/userStore';
+
+const userStore = useUserStore();
+
 // Componentes
 import { DialogClose, DialogContent, DialogDescription, DialogOverlay, DialogPortal, DialogRoot, DialogTitle, DialogTrigger } from 'radix-vue';
 
@@ -20,7 +24,7 @@ const medicinesList = ref([]);
 //Função para buscar os pets da API
 const fetchPets = async () => {
     try {
-        const response = await axios.get('/animals');
+        const response = await axios.get(`/users/${userStore.userId}/animals`);
         pets.value = response.data;
     } catch (error) {
         console.log('Erro ao buscar pets:', error);
