@@ -2,12 +2,14 @@
 import { ref } from 'vue';
 import { useRouter } from 'vue-router'; // Importa useRouter
 import axios from 'axios'; // Importa axios para fazer as chamadas à API
+import { useUserStore } from '../stores/userStore';
 
 // Componente UI
 import Button from './ui/Button.vue';
 import TextInput from './ui/TextInput.vue';
 
 const router = useRouter(); // Cria uma instância do router
+const userStore = useUserStore();
 
 const isFormVisible = ref(false); // Controla a exibição dos formulários
 const isAuthForm = ref(true); // Controla qual formulário exibir
@@ -58,16 +60,10 @@ const handleSubmit = async () => {
 
             console.log('Login realizado:', response.data);
 
-            // Simulação de sucesso de login (você deve verificar a resposta da sua API)
-            const loginSuccess = response.status === 200;
+            //Armazena os dados do usuário no Pinia Store
+            userStore.setUserData(response.data);
 
-            if (loginSuccess) {
-                // Armazena o token ou os dados do usuário, se necessário
-                localStorage.setItem('token', response.data.token);
-
-                // Redireciona para a página EmpyPets após login bem-sucedido
-                router.push('/empy-pets');
-            }
+            router.push('/empy-pets');
         } catch (error) {
             console.error('Erro no login:', error.response?.data || error.message);
         }
