@@ -1,7 +1,6 @@
 <script setup>
 import Dialog from './ui/Dialog.vue';
 import letsStart from '../../public/src/assets/lets-start-illustration.svg';
-import logoAdopets from '../../public/src/assets/Adopets.svg';
 import Form from './ui/Form.vue';
 </script>
 
