@@ -3,6 +3,7 @@ import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { DialogClose } from 'radix-vue';
 import axios from 'axios';
+import { useUserStore } from '../../stores/userStore';
 
 // Componentes importados
 import TextInput from './TextInput.vue';
@@ -10,6 +11,8 @@ import Button from './Button.vue';
 
 // Componentes Ui
 import Select from './Select.vue';
+
+const userStore = useUserStore();
 
 // Variáveis reativas para armazenar os dados do formulário
 const petData = ref({
@@ -22,7 +25,7 @@ const petData = ref({
   is_castred: '',
   size: '',
   status: 1,
-  ref_id_user: 1, // ID do usuário
+  ref_id_user: userStore.userId, // Define o ID do usuário logado a partir da store
   ativo: 1 // Ativo padrão
 });
 
