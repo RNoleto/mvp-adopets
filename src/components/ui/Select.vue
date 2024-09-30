@@ -54,7 +54,7 @@ watch(selectedValue, (newValue) => {
         <SelectRoot v-model="selectedValue">
           <label class="text-sm font-semibold text-zinc-800">{{ selectLabel }}</label>
           <SelectTrigger
-          class="inline-flex min-w-[160px] items-center justify-between rounded-lg px-[15px] text-[13px] leading-none h-[35px] gap-[5px] bg-white text-grass11 shadow-[0_2px_10px] shadow-black/10 hover:bg-mauve3 focus:shadow-[0_0_0_2px] focus:shadow-black data-[placeholder]:text-green9 outline-none"
+          class="inline-flex min-w-[160px] items-center justify-between rounded-lg px-[15px] text-[13px] leading-none h-[35px] gap-[5px] bg-white text-grass11 shadow-[0_2px_10px] shadow-black/10 hover:bg-blue-100 focus:shadow-[0_0_0_2px] focus:shadow-black data-[placeholder]:text-green9 outline-none"
           aria-label="Customise options"
         >
           <SelectValue placeholder="Selecione uma opção..." class="text-zinc-500" />
@@ -74,7 +74,7 @@ watch(selectedValue, (newValue) => {
                 <SelectItem
                   v-for="(option, index) in options"
                   :key="index"
-                  class="text-zinc-600 text-[13px] leading-none text-grass11 rounded-[3px] flex items-center h-[25px] pr-[35px] pl-[25px] relative select-none data-[disabled]:text-mauve8 data-[disabled] :pointer-events-none data-[highlighted]:outline-none data-[highlighted]:bg-green9 data-[highlighted]:text-green1"
+                  class="text-zinc-600 text-[13px] leading-none text-grass11 rounded-[3px] flex items-center h-[25px] pr-[35px] pl-[25px] relative select-none data-[disabled]:text-mauve8 data-[disabled] :pointer-events-none data-[highlighted]:outline-none data-[highlighted]:bg-green9 data-[highlighted]:text-green1 hover:bg-blue-500 hover:text-white"
                   :value="option"
                 >
                   <SelectItemIndicator class="text-blue-700 absolute left-0 w-[25px] inline-flex items-center justify-center">
