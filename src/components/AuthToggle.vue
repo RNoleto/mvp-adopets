@@ -32,6 +32,10 @@ const showLoginForm = () => {
     isFormVisible.value = true; // Exibe os formulários ao clicar
 };
 
+const goBack = () => {
+    isFormVisible.value = false;
+}
+
 // Função para manipular a submissão do formulário
 const handleSubmit = async () => {
     if (isAuthForm.value) {
@@ -123,9 +127,14 @@ const resetFields = () => {
                     <TextInput id="loginPassword" v-model="loginPassword" label="Senha" placeholder="Sua senha" type="password" />
                 </div>
 
+                <div v-if="isFormVisible" class="flex w-full gap-2">
                 <Button type="submit" class="w-full mt-4">
                     {{ isAuthForm ? 'Registrar' : 'Login' }}
                 </Button>
+                <Button @click="goBack" class="w-full mt-4" variant="secondary">
+                    Voltar
+                </Button>
+                </div>
             </form>
         </div>
     </div>

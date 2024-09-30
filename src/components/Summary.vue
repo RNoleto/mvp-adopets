@@ -158,6 +158,7 @@ const fetchInfos = async (petId) => {
 <template>
     <div class="h-screen flex flex-col items-center justify-center">
         <h2 class="text-2xl font-semibold">Adopets!</h2>
+        <p class="text-sm mt-2 mb-2">Seja bem vindo <span class="text-blue-600">{{ userStore.userName }}</span></p>
         <div class="w-[360px] flex flex-col gap-3 mb-5">
             <div class="flex gap-1 font-bold w-[360px]">
                 <p>Meus Pets</p>
