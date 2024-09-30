@@ -71,7 +71,6 @@ const handleSubmit = async () => {
             try {
                 //Chama à API para buscar os pets cadastrados pelo usuário
                 const petsResponse = await axios.get(`/users/${userStore.userId}/animals`);
-                console.log(petsResponse.data);
                 if(petsResponse.data.length > 0){
                     router.push('/summary');
                 } else {
