@@ -1,6 +1,6 @@
 <script setup>
 // Padrão
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 import axios from 'axios';
 import dayjs from 'dayjs';
 // Components UI
@@ -48,6 +48,7 @@ const selectedOption = ref('');
 const itemName = ref('');
 const itemDate = ref('');
 const medicineName = ref('');
+
 
 // Arrays separados para armazenar vacinas e medicamentos
 const addedVaccines = ref([]);
@@ -128,31 +129,52 @@ const limparInfos = async (petid) => {
             medicinesList.value = '';
 }
 
-//Função para retornar as Vacinas e Medicamentos do pet selecionado
-const fetchInfos = async (petId) => {
-    try {
-        const [vaccinesResponse, medicinesResponse] = await Promise.allSettled([
-            axios.get(`/vaccines/pet/${petId}`),
-            axios.get(`/medicines/pet/${petId}`)
-        ]);
+// Função para calcular a idade de um pet específico
+const calculatePetAge = (birthDate) => {
+    const birth = new Date(birthDate);
+    const today = new Date();
 
-        // Verifica o status de cada requisição
-        if (vaccinesResponse.status === 'fulfilled') {
-            vaccinesList.value = vaccinesResponse.value.data;
-        } else {
-            console.log('Nenhuma vacina encontrada ou erro ao buscar vacinas');
-        }
+    let ageYears = today.getFullYear() - birth.getFullYear();
 
-        if (medicinesResponse.status === 'fulfilled') {
-            medicinesList.value = medicinesResponse.value.data;
-        } else {
-            console.log('Nenhum medicamento encontrado ou erro ao buscar medicamentos');
-        }
-        
-    } catch (error) {
-        console.log('Erro inesperado ao buscar informações do pet: ', error);
+    const monthDifference = today.getMonth() - birth.getMonth();
+    const dayDifference = today.getDate() - birth.getDate();
+
+    if (monthDifference < 0 || (monthDifference === 0 && dayDifference < 0)) {
+        ageYears--;
+    }
+
+    if (ageYears < 1) {
+        const ageMonths = (today.getFullYear() - birth.getFullYear()) * 12 + today.getMonth() - birth.getMonth();
+        return `${ageMonths} ${ageMonths === 1 ? 'mês' : 'meses'}`;
+    } else {
+        return `${ageYears} ${ageYears === 1 ? 'ano' : 'anos'}`;
     }
 };
+
+//Função para calcular idade do pet
+const petAge = computed(() => {
+    const birthDate = new Date(pet.birth);
+    const today = new Date();
+
+    //Calcula a diferença em anos
+    let ageYears = today.getFullYear() - birthDate.getFullYear();
+    
+    //Ajusta se o mês atual for anterior ao mês de nascimento ou se for o mesmo mês, mas o dia ainda não chegou
+    const monthDifference = today.getMonth() - birthDate.getMonth();
+    const dayDifference = today.getDate() - birthDate.getDate();
+
+    if(monthDifference < 0 || (monthDifference === 0 && dayDifference < 0)){
+        ageYears--;
+    }
+
+    //Se o pet tiver menos de 1 ano
+    if(ageYears < 1){
+        const ageMonths = (today.getFullYear() - birthDate.getFullYear()) * 12 + (today.getMonth() - birthDate.getMonth());
+        return `${ageMonths} ${ageMonths === 1 ? 'month' : 'months'}`; // Retorna em meses
+    } else {
+        return `${ageYears} ${ageYears === 1 ? 'year' : 'years'}`; // Retorna em anos
+    }
+});
 </script>
 
 <template>
@@ -170,7 +192,8 @@ const fetchInfos = async (petId) => {
                     <DialogTrigger @click="fetchInfos(pet.id)">
                         <div class="flex justify-between items-baseline">
                             <p class="text-xl font-semibold">{{ pet.name }}</p>
-                            <p class="text-sm">{{ formatDate(pet.birth) }}</p>
+                            <!-- <p class="text-sm">{{ formatDate(pet.birth) }}</p> -->
+                            <p>Idade: {{ calculatePetAge(pet.birth) }}</p>
                         </div>
                         <div class="flex justify-between gap-2">
                             <p class="text-sm font-semibold">{{ pet.specie }}</p>
@@ -180,7 +203,6 @@ const fetchInfos = async (petId) => {
                     </DialogTrigger>
                     <DialogPortal>
                         <DialogOverlay class="fixed inset-0 z-60 bg-black/40 backdrop-blur-sm" />
-
                         <!-- Conteúdo do Dialog com detalhes do pet -->
                         <DialogContent
                             class="fixed z-60 right-0 top-0 bottom-0 w-[400px] h-screen border-l border-zinc-600 bg-zinc-300 p-8">
@@ -192,7 +214,7 @@ const fetchInfos = async (petId) => {
                                     <p><span class="mr-2 text-base text-zinc-900 font-semibold">Espécie:</span> {{pet.specie }}</p>
                                     <p><span class="mr-2 text-base text-zinc-900 font-semibold">Raça:</span>{{ pet.breed }}</p>
                                     <p><span class="mr-2 text-base text-zinc-900 font-semibold">Sexo:</span> {{pet.gender}}</p>
-                                    <p><span class="mr-2 text-base text-zinc-900 font-semibold">Idade:</span>{{formatDate(pet.birth) }}</p>
+                                    <p><span class="mr-2 text-base text-zinc-900 font-semibold">Idade:</span>{{ calculatePetAge(pet.birth) }} - {{ formatDate(pet.birth) }}</p>
                                     <p v-if="pet.chip_number !== null"><span class="mr-2 text-base text-zinc-900 font-semibold">Nº Chip:</span> {{pet.chip_number }}</p>
                                     <p v-else><span class="mr-2 text-base text-zinc-900 font-semibold">Nº Chip:</span> Não informado</p>
                                 </div>
