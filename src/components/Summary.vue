@@ -36,6 +36,22 @@ function formatDate(date) {
     return dayjs(date).format('DD/MM/YYYY');
 }
 
+//Função para buscar vacinas e medicamentos do pet selecionado
+const fetchInfos = async (petId) => {
+    try {
+        //Buscar Vacinas
+        const vaccineResponse = await axios.get(`/vaccines/pet/${petId}`);
+        vaccinesList.value = vaccineResponse.data;
+        
+        //Buscar medicamentos
+        const medicineResponse = await axios.get(`/medicines/pet/${petId}`);
+        medicinesList.value = medicineResponse.data;
+    } catch (error) {
+        console.log(`Erro ao buscar informações de vacinas e medicamentos do pet ${petName}:`, error);
+        alert('Erro ao buscar informações. Tente novamente.');
+    }
+};
+
 //Chamar a função ao montar o componente
 onMounted(() => {
     fetchPets();
