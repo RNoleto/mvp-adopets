@@ -9,10 +9,12 @@ const button = tv({
         variant: {
             primary: 'bg-blue-500 text-blue-50 hover:bg-blue-600 ring-blue-500',
             secondary: 'bg-zinc-900 text-zinc-50 hover:bg-zinc-800 ring-zinc-900',
+            delete: 'bg-red-500 text-red-50 hover:bg-red-600 ring-red-500',
         },
         size: {
             default: 'px-4 py-2.5',
             sm: 'px-3 py-1.5',
+            xs: 'px-1.5 py-1',
         },
     },
     defaultVariants: {

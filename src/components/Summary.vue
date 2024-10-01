@@ -12,6 +12,8 @@ import TextInput from './ui/TextInput.vue';
 
 import { useUserStore } from '../stores/userStore';
 
+import { Icon } from '@iconify/vue'
+
 const userStore = useUserStore();
 
 // Componentes
@@ -38,19 +40,52 @@ function formatDate(date) {
 
 //Função para buscar vacinas e medicamentos do pet selecionado
 const fetchInfos = async (petId) => {
+    // Inicializar as listas com arrays vazios antes de buscar os dados
+    vaccinesList.value = [];
+    medicinesList.value = [];
+
+    // Tentar buscar as vacinas
     try {
-        //Buscar Vacinas
         const vaccineResponse = await axios.get(`/vaccines/pet/${petId}`);
         vaccinesList.value = vaccineResponse.data;
-        
-        //Buscar medicamentos
+    } catch (error) {
+        console.log(`Erro ao buscar vacinas do pet ${petId}:`, error);
+        vaccinesList.value = []; // Se der erro, garante que a lista de vacinas fique vazia
+    }
+
+    // Tentar buscar os medicamentos
+    try {
         const medicineResponse = await axios.get(`/medicines/pet/${petId}`);
         medicinesList.value = medicineResponse.data;
     } catch (error) {
-        console.log(`Erro ao buscar informações de vacinas e medicamentos do pet ${petName}:`, error);
-        alert('Erro ao buscar informações. Tente novamente.');
+        console.log(`Erro ao buscar medicamentos do pet ${petId}:`, error);
+        medicinesList.value = []; // Se der erro, garante que a lista de medicamentos fique vazia
     }
 };
+
+//Função para deletar uma vacina
+const deleteVaccine = async (vaccineId) => {
+    try {
+        await axios.delete(`/vaccines/${vaccineId}`);
+        alert('Vacina removida com sucesso!');
+        fetchInfos(petId);
+    } catch (error) {
+        console.log('Erro ao deletar vacina:', error);
+        alert('Erro ao deletar a vacina. Tente novamente mais tarde.');
+    }
+};
+
+//Função para deletar um medicamento
+const deleteMedicine = async (medicineId) => {
+    try {
+        await axios.delete(`/medicines/${medicineId}`);
+        alert('Medicamento removido com sucesso!');
+        fetchInfos(petId);
+    } catch (error) {
+        console.log('Erro ao deletar medicamento:', error);
+        alert('Erro ao deletar o medicamento. Tente novamente mais tarde.');
+    }
+}
 
 //Chamar a função ao montar o componente
 onMounted(() => {
@@ -298,15 +333,18 @@ const petAge = computed(() => {
                                 <div class="mt-4 p-2 rounded-xl bg-zinc-200">
                                     <h4 class="text-lg font-semibold text-blue-500">Vacinas Registradas</h4>
                                     <ul v-if="vaccinesList.length">
-                                        <li v-for="(vaccine, index) in vaccinesList" :key="`vacina-${index}`">
+                                        <li v-for="(vaccine, index) in vaccinesList" :key="`vacina-${index}`" class="mb-1 flex flex-wrap gap-1 items-baseline">
                                             <p>{{ vaccine.name }} - {{ formatDate(vaccine.date) }}</p>
+                                            <!-- <Button @click="deleteVaccine(vaccine.id)" variant="delete"><Icon icon="ph:trash" /></Button> -->
+                                            <Button @click="deleteVaccine(vaccine.id)"variant="delete" size="xs"><Icon icon="mi:delete-alt" /></Button>
                                         </li>
                                     </ul>
                                     <p v-else>Nenhuma vacina registrada.</p>
                                     <h4 class="text-lg font-semibold text-green-500 mt-4">Medicamentos Registrados</h4>
                                     <ul v-if="medicinesList.length">
-                                        <li v-for="(medicine, index) in medicinesList" :key="`medicamento-${index}`">
+                                        <li v-for="(medicine, index) in medicinesList" :key="`medicamento-${index}`" class="mb-1 flex flex-wrap gap-1 items-baseline">
                                             <p>{{ medicine.name }} - {{ formatDate(medicine.date) }}</p>
+                                            <Button @click="deleteMedicine(medicine.id)"variant="delete" size="xs"><Icon icon="mi:delete-alt" /></Button>
                                         </li>
                                     </ul>
                                     <p v-else>Nenhum medicamento registrado.</p>
