@@ -333,7 +333,7 @@ const petAge = computed(() => {
                                 <div class="mt-4 p-2 rounded-xl bg-zinc-200">
                                     <h4 class="text-lg font-semibold text-blue-500">Vacinas Registradas</h4>
                                     <ul v-if="vaccinesList.length">
-                                        <li v-for="(vaccine, index) in vaccinesList" :key="`vacina-${index}`" class="mb-1 flex flex-wrap gap-1 items-baseline">
+                                        <li v-for="(vaccine, index) in vaccinesList" :key="`vacina-${index}`" class="mb-1 flex flex-wrap gap-1 items-center justify-between hover:bg-zinc-300">
                                             <p>{{ vaccine.name }} - {{ formatDate(vaccine.date) }}</p>
                                             <!-- <Button @click="deleteVaccine(vaccine.id)" variant="delete"><Icon icon="ph:trash" /></Button> -->
                                             <Button @click="deleteVaccine(vaccine.id)"variant="delete" size="xs"><Icon icon="mi:delete-alt" /></Button>
@@ -342,7 +342,7 @@ const petAge = computed(() => {
                                     <p v-else>Nenhuma vacina registrada.</p>
                                     <h4 class="text-lg font-semibold text-green-500 mt-4">Medicamentos Registrados</h4>
                                     <ul v-if="medicinesList.length">
-                                        <li v-for="(medicine, index) in medicinesList" :key="`medicamento-${index}`" class="mb-1 flex flex-wrap gap-1 items-baseline">
+                                        <li v-for="(medicine, index) in medicinesList" :key="`medicamento-${index}`" class="mb-1 flex flex-wrap gap-1 items-center justify-between hover:bg-zinc-300">
                                             <p>{{ medicine.name }} - {{ formatDate(medicine.date) }}</p>
                                             <Button @click="deleteMedicine(medicine.id)"variant="delete" size="xs"><Icon icon="mi:delete-alt" /></Button>
                                         </li>
