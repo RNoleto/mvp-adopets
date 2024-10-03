@@ -39,8 +39,13 @@ const router = useRouter();
 
 const savePet = async () => {  
   try {
-    const response = await axios.post('/animals', petData.value);
+    const response = await axios.post('/animals', petData.value, {
+      headers: { Authorization: `Bearer ${userStore.token}`}
+    });
     console.log('Pet cadastrado com sucesso:', response.data);
+
+    await userStore.fetchPets();
+
     router.push('/summary');
   } catch (error) {
     console.error('Erro ao cadastrar o Pet:', error.response.data);

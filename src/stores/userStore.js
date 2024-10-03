@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { defineStore } from 'pinia';
 
 export const useUserStore = defineStore('user', {
@@ -6,6 +7,7 @@ export const useUserStore = defineStore('user', {
         userId: null,
         userName: null,
         userEmail: null,
+        pets: [],
     }),
     actions: {
         setUserData(userData) {
@@ -37,7 +39,17 @@ export const useUserStore = defineStore('user', {
             this.userId = localStorage.getItem('user_id');
             this.userName = localStorage.getItem('user_name');
             this.userEmail = localStorage.getItem('user_email');
-        }
+        },
+        async fetchPets(){
+            try {
+                const response = await axios.get(`/users/${this.userId}/animals`, {
+                    headers: { Authorization: `Bearer ${this.token}`}
+                });
+                this.pets = response.data;
+            } catch (error) {
+                console.error('Erro ao buscar os pets:', error);
+            }    
+        },
     },
     getters: {
         isLoggedIn: (state) => !!state.token, // Verifica se o usuário está logado

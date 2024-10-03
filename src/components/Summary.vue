@@ -27,7 +27,8 @@ const medicinesList = ref([]);
 const fetchPets = async () => {
     try {
         const response = await axios.get(`/users/${userStore.userId}/animals`);
-        pets.value = response.data;
+        userStore.pets = response.data;
+        pets.value = userStore.pets;        
     } catch (error) {
         console.log('Erro ao buscar pets:', error);
     }
@@ -238,7 +239,7 @@ const petAge = computed(() => {
             </div>
             <!-- Lista de pets cadatrados -->
             <div class="flex flex-col w-[360px] bg-zinc-300 px-2 py-1 rounded-md hover:bg-zinc-400 hover:text-zinc-100"
-                v-for="pet in pets" :key="pet.id">
+                v-for="pet in userStore.pets" :key="pet.id">
                 <DialogRoot>
                     <DialogTrigger @click="fetchInfos(pet.id)">
                         <div class="flex justify-between items-baseline">
