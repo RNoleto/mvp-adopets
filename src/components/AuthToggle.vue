@@ -1,8 +1,8 @@
 <script setup>
 import { ref } from 'vue';
-import { useRouter } from 'vue-router'; // Importa useRouter
-import axios from 'axios'; // Importa axios para fazer as chamadas à API
+import { useRouter } from 'vue-router';
 import { useUserStore } from '../stores/userStore';
+import axios from 'axios'; 
 
 // Componente UI
 import Button from './ui/Button.vue';
