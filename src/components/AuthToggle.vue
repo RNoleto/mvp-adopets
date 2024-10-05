@@ -41,7 +41,7 @@ const handleSubmit = async () => {
     if (isAuthForm.value) {
         // Chamada à API para registrar o usuário
         try {
-            const response = await axios.post('/register', {
+            const response = await axios.post('register', {
                 name: userName.value,
                 email: userEmail.value,
                 password: userPassword.value
