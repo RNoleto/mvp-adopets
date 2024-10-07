@@ -32,6 +32,22 @@ export const usePetStore = defineStore('pet', {
             }
         },
 
+        //Função para deletar um pet
+        async deletePet(petId) {
+            try {
+                const response = await axios.delete(`/animals/${petId}`, {
+                    headers: { Authorization: `Bearer ${this.token}` }
+                });
+                console.log('Pet deletado com sucesso:', response.data);
+        
+                // Atualize a lista de pets após a exclusão
+                await this.fetchAllPets(this.userId);
+                location.reload();
+            } catch (error) {
+                console.error('Erro ao deletar o Pet:', error);
+            }
+        },
+
         // Função para buscar as informações de um pet específico
         async fetchPetData(petId) {
             try {

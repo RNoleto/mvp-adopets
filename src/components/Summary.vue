@@ -20,6 +20,23 @@ import { Icon } from '@iconify/vue'
 
 const userStore = useUserStore();
 const petStore = usePetStore();
+const deleting = ref(false);
+
+// Função para deletar o pet
+const deletePet = async (petId) => {
+  if (confirm('Tem certeza que deseja deletar este pet?')) {
+    deleting.value = true;
+    try {
+      await petStore.deletePet(petId);
+      alert('Pet deletado com sucesso!');
+    } catch (error) {
+      console.error('Erro ao deletar o Pet:', error);
+      alert('Erro ao deletar o pet.');
+    } finally {
+      deleting.value = false;
+    }
+  }
+};
 
 //Função para formatar a data
 function formatDate(date) {
@@ -222,7 +239,8 @@ const petAge = computed(() => {
                         <!-- Conteúdo do Dialog com detalhes do pet -->
                         <DialogContent
                             class="fixed z-60 right-0 top-0 bottom-0 w-[400px] h-screen border-l border-zinc-600 bg-zinc-300 p-8">
-                            <DialogTitle class="text-xl font-semibold text-zinc-900">{{ pet.name }}</DialogTitle>
+                            <DialogTitle class="text-xl font-semibold text-zinc-900 flex itens-center justify-between">{{ pet.name }} </DialogTitle>
+                            <Button variant="delete" size="xs" @click="deletePet(petStore.pet.id)" :disabled="deleting">Deletar</Button>
                             <DialogDescription class=" text-zinc-800 text-sm leading-relaxed flex flex-col h-full">
                                 <p>Detalhes sobre {{ pet.name }}</p>
                                 <hr>
