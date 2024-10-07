@@ -41,13 +41,29 @@ export const usePetStore = defineStore('pet', {
                 this.pet = petResponse.data;
 
                 // Buscar vacinas e medicamentos do pet
-                const [vaccinesResponse, medicinesResponse] = await Promise.all([
-                    axios.get(`/vaccines/pet/${petId}`, { headers: { Authorization: `Bearer ${this.token}` } }),
-                    axios.get(`/medicines/pet/${petId}`, { headers: { Authorization: `Bearer ${this.token}` } })
-                ]);
+                const vaccinesRequest = axios.get(`/vaccines/pet/${petId}`, { headers: { Authorization: `Bearer ${this.token}`}})
+                    .catch(error => {
+                        if(error.response && error.response.status === 404){
+                            // Retorna um array vazio se não encontrar vacinas
+                            return { data: [] };
+                        }
+                        throw error; // Lança o erro se não for 404
+                    });
+
+                const medicinesRequest = axios.get(`/medicines/pet/${petId}`, { headers: { Authorization: `Bearer ${this.token}`}})
+                    .catch(error => {
+                         if(error.response && error.response.status === 404){
+                            return { data: [] };
+                         }
+                         throw error;
+                    });
+
+                // Aguarda ambas as requisições
+                const [ vaccinesResponse, medicinesResponse ] = await Promise.all([vaccinesRequest, medicinesRequest]);
 
                 this.vaccines = vaccinesResponse.data;
                 this.medicines = medicinesResponse.data;
+
             } catch (error) {
                 console.error('Erro ao buscar os dados do pet:', error);
             }

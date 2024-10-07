@@ -48,7 +48,7 @@ export const useUserStore = defineStore('user', {
                 this.pets = response.data;
             } catch (error) {
                 if (error.response) {
-                    console.error('Erro ao buscar os pets:', error.response.data);
+                    // console.error('Erro ao buscar os pets:', error.response.data);
                     if (error.response.status === 404) {
                         // Verifica a mensagem de erro e faz algo específico
                         if (error.response.data.message === 'Nenhum animal cadastrado por esse usuário') {

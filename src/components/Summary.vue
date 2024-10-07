@@ -26,31 +26,6 @@ function formatDate(date) {
     return dayjs(date).format('DD/MM/YYYY');
 }
 
-// //Função para buscar vacinas e medicamentos do pet selecionado
-// const fetchInfos = async (petId) => {
-//     // Inicializar as listas com arrays vazios antes de buscar os dados
-//     vaccinesList.value = [];
-//     medicinesList.value = [];
-
-//     // Tentar buscar as vacinas
-//     try {
-//         const vaccineResponse = await axios.get(`/vaccines/pet/${petId}`);
-//         vaccinesList.value = vaccineResponse.data;
-//     } catch (error) {
-//         console.log(`Erro ao buscar vacinas do pet ${petId}:`, error);
-//         vaccinesList.value = []; // Se der erro, garante que a lista de vacinas fique vazia
-//     }
-
-//     // Tentar buscar os medicamentos
-//     try {
-//         const medicineResponse = await axios.get(`/medicines/pet/${petId}`);
-//         medicinesList.value = medicineResponse.data;
-//     } catch (error) {
-//         console.log(`Erro ao buscar medicamentos do pet ${petId}:`, error);
-//         medicinesList.value = []; // Se der erro, garante que a lista de medicamentos fique vazia
-//     }
-// };
-
 //Função para deletar uma vacina
 const deleteVaccine = async (vaccineId) => {
     try {
