@@ -10,59 +10,46 @@ import Button from './ui/Button.vue';
 import SelectField from './ui/SelectField.vue';
 import TextInput from './ui/TextInput.vue';
 
+// Componentes
+import { DialogClose, DialogContent, DialogDescription, DialogOverlay, DialogPortal, DialogRoot, DialogTitle, DialogTrigger } from 'radix-vue';
+
 import { useUserStore } from '../stores/userStore';
+import { usePetStore } from '../stores/petStore';
 
 import { Icon } from '@iconify/vue'
 
 const userStore = useUserStore();
-
-// Componentes
-import { DialogClose, DialogContent, DialogDescription, DialogOverlay, DialogPortal, DialogRoot, DialogTitle, DialogTrigger } from 'radix-vue';
-
-const pets = ref([]);
-const vaccinesList = ref([]);
-const medicinesList = ref([]);
-
-//Função para buscar os pets da API
-const fetchPets = async () => {
-    try {
-        const response = await axios.get(`/users/${userStore.userId}/animals`);
-        userStore.pets = response.data;
-        pets.value = userStore.pets;        
-    } catch (error) {
-        console.log('Erro ao buscar pets:', error);
-    }
-};
+const petStore = usePetStore();
 
 //Função para formatar a data
 function formatDate(date) {
     return dayjs(date).format('DD/MM/YYYY');
 }
 
-//Função para buscar vacinas e medicamentos do pet selecionado
-const fetchInfos = async (petId) => {
-    // Inicializar as listas com arrays vazios antes de buscar os dados
-    vaccinesList.value = [];
-    medicinesList.value = [];
+// //Função para buscar vacinas e medicamentos do pet selecionado
+// const fetchInfos = async (petId) => {
+//     // Inicializar as listas com arrays vazios antes de buscar os dados
+//     vaccinesList.value = [];
+//     medicinesList.value = [];
 
-    // Tentar buscar as vacinas
-    try {
-        const vaccineResponse = await axios.get(`/vaccines/pet/${petId}`);
-        vaccinesList.value = vaccineResponse.data;
-    } catch (error) {
-        console.log(`Erro ao buscar vacinas do pet ${petId}:`, error);
-        vaccinesList.value = []; // Se der erro, garante que a lista de vacinas fique vazia
-    }
+//     // Tentar buscar as vacinas
+//     try {
+//         const vaccineResponse = await axios.get(`/vaccines/pet/${petId}`);
+//         vaccinesList.value = vaccineResponse.data;
+//     } catch (error) {
+//         console.log(`Erro ao buscar vacinas do pet ${petId}:`, error);
+//         vaccinesList.value = []; // Se der erro, garante que a lista de vacinas fique vazia
+//     }
 
-    // Tentar buscar os medicamentos
-    try {
-        const medicineResponse = await axios.get(`/medicines/pet/${petId}`);
-        medicinesList.value = medicineResponse.data;
-    } catch (error) {
-        console.log(`Erro ao buscar medicamentos do pet ${petId}:`, error);
-        medicinesList.value = []; // Se der erro, garante que a lista de medicamentos fique vazia
-    }
-};
+//     // Tentar buscar os medicamentos
+//     try {
+//         const medicineResponse = await axios.get(`/medicines/pet/${petId}`);
+//         medicinesList.value = medicineResponse.data;
+//     } catch (error) {
+//         console.log(`Erro ao buscar medicamentos do pet ${petId}:`, error);
+//         medicinesList.value = []; // Se der erro, garante que a lista de medicamentos fique vazia
+//     }
+// };
 
 //Função para deletar uma vacina
 const deleteVaccine = async (vaccineId) => {
@@ -90,7 +77,10 @@ const deleteMedicine = async (medicineId) => {
 
 //Chamar a função ao montar o componente
 onMounted(() => {
-    fetchPets();
+    userStore.loadUserDataFromLocalStorage(); // Carrega os dados do localStorage
+    if(userStore.isLoggedIn){
+        petStore.fetchAllPets(userStore.userId); // Busca todos os pets do usuário
+    }
 });
 
 // Variável para armazenar a opção selecionada
@@ -172,13 +162,12 @@ const saveInfos = async (petId) => {
     }
 };
 
-const limparInfos = async (petid) => {
+const limparInfos = async (petId) => {
      // Limpar os campos de input após adicionar
             itemName.value = '';
             itemDate.value = '';
-            medicineName.value = '';
-            vaccinesList.value = '';
-            medicinesList.value = '';
+            petStore.vaccines = [];
+            petStore.medicines = [];
 }
 
 // Função para calcular a idade de um pet específico
@@ -239,9 +228,9 @@ const petAge = computed(() => {
             </div>
             <!-- Lista de pets cadatrados -->
             <div class="flex flex-col w-[360px] bg-zinc-300 px-2 py-1 rounded-md hover:bg-zinc-400 hover:text-zinc-100"
-                v-for="pet in userStore.pets" :key="pet.id">
+                v-for="pet in petStore.pets" :key="pet.id">
                 <DialogRoot>
-                    <DialogTrigger @click="fetchInfos(pet.id)">
+                    <DialogTrigger @click="petStore.fetchPetData(pet.id)">
                         <div class="flex justify-between items-baseline">
                             <p class="text-xl font-semibold">{{ pet.name }}</p>
                             <!-- <p class="text-sm">{{ formatDate(pet.birth) }}</p> -->
@@ -331,19 +320,19 @@ const petAge = computed(() => {
                                         </div>
                                     </div>
                                 </div>
+                                <!-- Campos com vacinas e medicamentos já registrados -->
                                 <div class="mt-4 p-2 rounded-xl bg-zinc-200">
                                     <h4 class="text-lg font-semibold text-blue-500">Vacinas Registradas</h4>
-                                    <ul v-if="vaccinesList.length">
-                                        <li v-for="(vaccine, index) in vaccinesList" :key="`vacina-${index}`" class="mb-1 flex flex-wrap gap-1 items-center justify-between hover:bg-zinc-300">
+                                    <ul v-if="petStore.vaccines.length">
+                                        <li v-for="(vaccine, index) in petStore.vaccines" :key="`vacina-${index}`" class="mb-1 flex flex-wrap gap-1 items-center justify-between hover:bg-zinc-300">
                                             <p>{{ vaccine.name }} - {{ formatDate(vaccine.date) }}</p>
-                                            <!-- <Button @click="deleteVaccine(vaccine.id)" variant="delete"><Icon icon="ph:trash" /></Button> -->
                                             <Button @click="deleteVaccine(vaccine.id)"variant="delete" size="xs"><Icon icon="mi:delete-alt" /></Button>
                                         </li>
                                     </ul>
                                     <p v-else>Nenhuma vacina registrada.</p>
                                     <h4 class="text-lg font-semibold text-green-500 mt-4">Medicamentos Registrados</h4>
-                                    <ul v-if="medicinesList.length">
-                                        <li v-for="(medicine, index) in medicinesList" :key="`medicamento-${index}`" class="mb-1 flex flex-wrap gap-1 items-center justify-between hover:bg-zinc-300">
+                                    <ul v-if="petStore.medicines.length">
+                                        <li v-for="(medicine, index) in petStore.medicines" :key="`medicamento-${index}`" class="mb-1 flex flex-wrap gap-1 items-center justify-between hover:bg-zinc-300">
                                             <p>{{ medicine.name }} - {{ formatDate(medicine.date) }}</p>
                                             <Button @click="deleteMedicine(medicine.id)"variant="delete" size="xs"><Icon icon="mi:delete-alt" /></Button>
                                         </li>

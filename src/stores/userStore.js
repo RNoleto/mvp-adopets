@@ -47,7 +47,20 @@ export const useUserStore = defineStore('user', {
                 });
                 this.pets = response.data;
             } catch (error) {
-                console.error('Erro ao buscar os pets:', error);
+                if (error.response) {
+                    console.error('Erro ao buscar os pets:', error.response.data);
+                    if (error.response.status === 404) {
+                        // Verifica a mensagem de erro e faz algo específico
+                        if (error.response.data.message === 'Nenhum animal cadastrado por esse usuário') {
+                            console.log('Nenhum pet encontrado para este usuário.');
+                            this.pets = []; // Reseta a lista de pets se não forem encontrados
+                        } else {
+                            console.log('Usuário não encontrado.');
+                        }
+                    }
+                } else {
+                    console.error('Erro ao buscar os pets:', error.message);
+                }
             }    
         },
     },

@@ -63,24 +63,16 @@ const handleSubmit = async () => {
             });
 
             console.log('Login realizado:', response.data);
-
-            //Armazena os dados do usuário no Pinia Store
             userStore.setUserData(response.data);
 
-            //Após o login, verificar se o suário tem pets cadastrados ou não
-            try {
-                //Chama à API para buscar os pets cadastrados pelo usuário
-                const petsResponse = await axios.get(`/users/${userStore.userId}/animals`);
-                if(petsResponse.data.length > 0){
-                    router.push('/summary');
-                } else {
-                    router.push('/empy-pets');
-                }
-            } catch (error) {
-                console.error('Erro ao buscar pets do usuário:', error.response?.data || error.message);
+            await userStore.fetchPets(); // Chama a função para buscar os pets
+            console.log('Pets buscados:', userStore.pets); // Verifique os pets
+
+            if (userStore.pets.length > 0) {
+                router.push('/summary');
+            } else {
                 router.push('/empy-pets');
             }
-            // router.push('/empy-pets');
         } catch (error) {
             console.error('Erro no login:', error.response?.data || error.message);
         }
