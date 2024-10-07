@@ -46,11 +46,7 @@ const handleSubmit = async () => {
                 email: userEmail.value,
                 password: userPassword.value
             });
-
             console.log('Usuário registrado:', response.data);
-
-            // Redireciona para a página de login após cadastro (opcional)
-            router.push('/');
         } catch (error) {
             console.error('Erro ao registrar:', error.response?.data || error.message);
         }
@@ -62,11 +58,11 @@ const handleSubmit = async () => {
                 password: loginPassword.value
             });
 
-            console.log('Login realizado:', response.data);
+            // console.log('Login realizado:', response.data);
             userStore.setUserData(response.data);
 
             await userStore.fetchPets(); // Chama a função para buscar os pets
-            console.log('Pets buscados:', userStore.pets); // Verifique os pets
+            // console.log('Pets buscados:', userStore.pets); // Verifique os pets
 
             if (userStore.pets.length > 0) {
                 router.push('/summary');
