@@ -4,6 +4,7 @@ import { useRouter } from 'vue-router';
 import { DialogClose } from 'radix-vue';
 import axios from 'axios';
 import { useUserStore } from '../../stores/userStore';
+import { usePetStore } from '../../stores/petStore';
 
 // Componentes importados
 import TextInput from './TextInput.vue';
@@ -13,6 +14,7 @@ import Button from './Button.vue';
 import Select from './Select.vue';
 
 const userStore = useUserStore();
+const petStore = usePetStore();
 
 // Variáveis reativas para armazenar os dados do formulário
 const petData = ref({
@@ -34,9 +36,6 @@ const genderOptions = ['Macho', 'Femea'];
 const castredOptions = ['Sim', 'Não'];
 const sizeOptions = ['Pequeno', 'Médio', 'Grande', 'Gigante'];
 
-// Função para salvar os dados do pet
-const router = useRouter();
-
 const savePet = async () => {  
   try {
     const response = await axios.post('/animals', petData.value, {
@@ -44,9 +43,9 @@ const savePet = async () => {
     });
     console.log('Pet cadastrado com sucesso:', response.data);
 
-    await userStore.fetchPets();
+    await petStore.fetchAllPets(userStore.userId);
+    location.reload();
 
-    router.push('/summary');
   } catch (error) {
     console.error('Erro ao cadastrar o Pet:', error.response.data);
     console.log("Dados do Pet cadastrado: ", petData.value);
