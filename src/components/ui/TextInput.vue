@@ -17,7 +17,7 @@ const emit = defineEmits(['update:modelValue']);
 </script>
 
 <template>
-  <fieldset>
+  <fieldset class="px-0 py-0">
     <label class="text-sm font-semibold text-zinc-800" :for="id">{{ label }}</label>
     <input
       :id="id"

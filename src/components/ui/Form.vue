@@ -61,35 +61,41 @@ const savePet = async () => {
       
       <!-- Campo de Nº do Chip -->
       <TextInput type="number" label="Nº do Chip" id="petChip" v-model="petData.chip_number" />
-      
-      <!-- Campo de Espécie do Pet -->
-      <Select
-        selectLabel="Espécie do Pet"
-        v-model="petData.specie"
-        :options="speciesOptions"
-        label="Selecione uma opção"
-      />
-      <!-- Campo de Sexo do Pet -->
-      <Select
-        selectLabel="Sexo do Pet"
-        v-model="petData.gender"
-        :options="genderOptions"
-        label="Selecione uma opção"
-      />
 
+      <Fieldset class="flex gap-2 px-0">
+        <!-- Campo de Espécie do Pet -->
+        <Select
+          selectLabel="Espécie do Pet"
+          v-model="petData.specie"
+          :options="speciesOptions"
+          label="Selecione uma opção"
+        />
+        <!-- Campo de Sexo do Pet -->
+        <Select
+          selectLabel="Sexo do Pet"
+          v-model="petData.gender"
+          :options="genderOptions"
+          label="Selecione uma opção"
+        />
+      </Fieldset>
       <!-- Campo de Raça do Pet -->
       <TextInput label="Raça do Pet" id="breedPet" v-model="petData.breed" required />
+
+      <Fieldset class="flex gap-2 px-0 justify-between">
+        <!-- Campo de Data de Nascimento do Pet -->
+        <TextInput type="date" class="w-1" label="Data de Nascimento" id="birthDate" v-model="petData.birth" required />
+        
+        <!-- Campo para Castrado -->
+        <Select
+          selectLabel="Castrado?"
+          v-model="petData.is_castred"
+          :options="castredOptions"
+          label="Selecione uma opção"
+        />
+      </Fieldset>
       
-      <!-- Campo de Data de Nascimento do Pet -->
-       <TextInput type="date" class="w-1" label="Data de Nascimento" id="birthDate" v-model="petData.birth" required />
+
       
-      <!-- Campo para Castrado -->
-      <Select
-        selectLabel="Castrado?"
-        v-model="petData.is_castred"
-        :options="castredOptions"
-        label="Selecione uma opção"
-      />
       
       <!-- Campo para Tamanho do Pet -->
       <Select
