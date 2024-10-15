@@ -35,7 +35,7 @@ const speciesOptions = ['Cachorro', 'Gato'];
 const genderOptions = ['Macho', 'Femea'];
 const castredOptions = ['Sim', 'Não'];
 const sizeOptions = ['Pequeno', 'Médio', 'Grande', 'Gigante'];
-
+ 
 const savePet = async () => {  
   try {
     const response = await axios.post('/animals', petData.value, {
@@ -44,7 +44,6 @@ const savePet = async () => {
     console.log('Pet cadastrado com sucesso:', response.data);
 
     await petStore.fetchAllPets(userStore.userId);
-    location.reload();
 
   } catch (error) {
     console.error('Erro ao cadastrar o Pet:', error.response.data);
@@ -92,10 +91,7 @@ const savePet = async () => {
           :options="castredOptions"
           label="Selecione uma opção"
         />
-      </Fieldset>
-      
-
-      
+      </Fieldset>    
       
       <!-- Campo para Tamanho do Pet -->
       <Select
